@@ -2,7 +2,94 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section text-center">
+    <h1 class="display-4">
+        <i class="fas fa-film text-warning"></i> Bem-vindo ao IM2B
+    </h1>
+    <p class="lead">Descubra e gerencie seu catálogo de filmes e atores</p>
+
+    <div class="mt-4">
+        <a asp-controller="Filmes" asp-action="Index" class="btn btn-imdb btn-lg me-2">
+            <i class="fas fa-video"></i> Explorar Filmes
+        </a>
+        <a asp-controller="Atores" asp-action="Index" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-star"></i> Ver Atores
+        </a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="text-center mb-4">Filmes em Destaque</h2>
+
+        <div id="carouselFilmes" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicadores -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselFilmes" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselFilmes" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselFilmes" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <!-- Slides do Carrossel -->
+            <div class="carousel-inner">
+                <!-- Filme 1 Hamlet-->
+                <div class="carousel-item active">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 text-center">                           
+                            <img src="~/images/hamlet.jpg" class="d-block w-100 rounded" alt="Hamlet" style="max-height: 400px; object-fit: cover;">
+                            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
+                                <h5>Hamnet: A Vida Antes de Hamlet</h5>         
+                                <p>A história de Agnes - a esposa de William Shakespeare - enquanto ela luta para lidar com a perda de seu único filho, Hamnet. Uma história humana e comovente que serve de pano de fundo para a criação da peça mais famosa de Shakespeare.</p>
+                                <p><strong>Gênero:</strong> Drama | <strong>Ano:</strong> 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filme 2 Batalha-->
+                <div class="carousel-item">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 text-center">                            
+                            <img src="~/images/batalha.jpg" class="d-block w-100 rounded" alt="Batalha" style="max-height: 400px; object-fit: cover;">
+                            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
+                                <h5>Uma Batalha Após a Outra</h5>                                
+                                <p>Quando seu inimigo maligno ressurge após 16 anos, um grupo de ex-revolucionários se reúne para resgatar a filha de um dos seus.</p>
+                                <p><strong>Gênero:</strong> Ação | <strong>Ano:</strong> 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filme 3  Frankenstein-->
+                <div class="carousel-item">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 text-center">                            
+                            <img src="~/images/frankenstein.jpg" class="d-block w-100 rounded" alt="Frankenstein" style="max-height: 400px; object-fit: cover;">
+                            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
+                                <h5>Frankenstein</h5>                                
+                                <p>Um cientista brilhante, mas egocêntrico, dá vida a uma criatura em um experimento monstruoso que acaba levando à destruição do criador e de sua trágica criação.</p>
+                                <p><strong>Gênero:</strong> Drama | <strong>Ano:</strong> 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselFilmes" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselFilmes" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+
+        <!-- Link para Catálogo Completo -->
+        <div class="text-center mt-5">
+            <a asp-controller="Filmes" asp-action="Index" class="btn btn-imdb btn-lg">
+                <i class="fas fa-film"></i> Veja nosso Catálogo Completo
+            </a>
+        </div>
+    </div>
 </div>
