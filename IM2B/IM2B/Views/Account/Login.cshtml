@@ -1,0 +1,61 @@
+﻿@model IM2B.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DockVerse — @ViewData["Title"]</title>
+
+    <!-- Bootstrap CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="" crossorigin="anonymous">
+</head>
+<body>
+
+    <main class="container">
+        <div class="d-flex align-items-center justify-content-center min-vh-100">
+            <div class="login-card">
+                <div class="brand">
+                    <h1>Login</h1>                    
+                </div>
+
+                <hr />
+
+                <form class="login-form" asp-action="Login" asp-controller="Account" method="post" novalidate>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Email</label>
+                        <input autofocus
+                               type="text"
+                               class="form-control"
+                               id="email"
+                               asp-for="Email" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" asp-for="Password" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-login">Login</button>
+                    </div>
+
+                    <div class="mt-3">
+                        <!-- Shows if you inserted wrong values-->
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    </div>
+                </form>
+
+                <a asp-action="Register" asp-controller="Account">Não tem conta? Registre-se</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
