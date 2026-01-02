@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Filme>
+﻿@model IEnumerable<shared.Models.Filme>
 
 <h1>Lista de Filmes</h1>
 
@@ -10,11 +10,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var film in Model)
+        @foreach (var filme in Model)
         {
             <tr>
-                <td>@film.Titulo</td>
-                <td>@film.DataLancamento</td>
+                <td>@filme.Titulo</td>
+                <td>@filme.DataLancamento</td>
             </tr>
         }
     </tbody>

@@ -1,7 +1,7 @@
-﻿using IM2B.Models;
+﻿using shared.Models;
 using context.Entities;
 
-namespace IM2B.Mapping
+namespace context.Mappings
 {
     public static class PapelMapper
     {

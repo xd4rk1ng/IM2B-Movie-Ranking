@@ -12,7 +12,7 @@ using context;
 namespace IM2B.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20260102000359_Initial")]
+    [Migration("20260102170908_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -158,7 +158,7 @@ namespace IM2B.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("context.Entities.Ator", b =>
+            modelBuilder.Entity("context.Entities.AtorEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -185,7 +185,7 @@ namespace IM2B.Migrations
                     b.ToTable("Atores");
                 });
 
-            modelBuilder.Entity("context.Entities.Filme", b =>
+            modelBuilder.Entity("context.Entities.FilmeEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -215,7 +215,7 @@ namespace IM2B.Migrations
                     b.ToTable("Filmes");
                 });
 
-            modelBuilder.Entity("context.Entities.Papel", b =>
+            modelBuilder.Entity("context.Entities.PapelEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -231,7 +231,9 @@ namespace IM2B.Migrations
 
                     b.Property<string>("Personagem")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Desconhecido");
 
                     b.Property<bool>("Principal")
                         .HasColumnType("bit");
@@ -245,7 +247,7 @@ namespace IM2B.Migrations
                     b.ToTable("Papeis");
                 });
 
-            modelBuilder.Entity("context.Entities.User", b =>
+            modelBuilder.Entity("context.Entities.UserEntity", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -332,7 +334,7 @@ namespace IM2B.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("context.Entities.User", null)
+                    b.HasOne("context.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -341,7 +343,7 @@ namespace IM2B.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("context.Entities.User", null)
+                    b.HasOne("context.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -356,7 +358,7 @@ namespace IM2B.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("context.Entities.User", null)
+                    b.HasOne("context.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -365,22 +367,22 @@ namespace IM2B.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("context.Entities.User", null)
+                    b.HasOne("context.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("context.Entities.Papel", b =>
+            modelBuilder.Entity("context.Entities.PapelEntity", b =>
                 {
-                    b.HasOne("context.Entities.Ator", "Ator")
+                    b.HasOne("context.Entities.AtorEntity", "Ator")
                         .WithMany()
                         .HasForeignKey("AtorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("context.Entities.Filme", "Filme")
+                    b.HasOne("context.Entities.FilmeEntity", "Filme")
                         .WithMany()
                         .HasForeignKey("FilmeId")
                         .OnDelete(DeleteBehavior.Cascade)

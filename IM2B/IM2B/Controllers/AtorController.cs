@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using IM2B.Models;
+using shared.Models;
 
 namespace IM2B.Controllers
 {

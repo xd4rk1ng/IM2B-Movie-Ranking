@@ -7,6 +7,6 @@
         public DateOnly DataNasc { get; set; }
         public DateOnly? DataObito { get; set; }
         public string Biografia { get; set; }
-        public List<FilmeEntity> Filmes { get; set; }
+        public List<FilmeEntity> Filmes { get; set; } = new();
     }
 }

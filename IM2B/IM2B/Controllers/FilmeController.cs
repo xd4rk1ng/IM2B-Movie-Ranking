@@ -2,26 +2,27 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using context;
-using IM2B.Models;
+using shared.Models;
 using IM2B.ViewModels;
-using IM2B.Mapping;
+using context.Mappings;
+using shared.Interfaces;
 
 namespace IM2B.Controllers
 {
     public class FilmeController : Controller
     {
         // TODO: Adicionar DbContext quando configurar o banco de dados
-        private readonly ApplicationContext _context;
+        private readonly IGenericRepository<Filme> _filmeRepo;
 
-        public FilmeController(ApplicationContext context)
+        public FilmeController(IGenericRepository<Filme> filmeRepo)
         {
-            _context = context;
+            _filmeRepo = filmeRepo;
         }
 
         // Index - Listar todos os filmes
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var filmes = _context.Filmes.Select(e => e.ToModel()).ToList();
+            var filmes = await _filmeRepo.GetAllAsync();
             //var filmes = new List<Filme>(); // Placeholder
             return View(filmes);
         }

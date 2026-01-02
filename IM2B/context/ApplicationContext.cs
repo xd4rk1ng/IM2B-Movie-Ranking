@@ -45,9 +45,14 @@ namespace context
         {
             base.OnModelCreating(builder);
             builder.Entity<FilmeEntity>()
-                .HasMany(e => e.Atores)
-                .WithMany(e => e.Filmes)
-                .UsingEntity<PapelEntity>();
+                .HasMany(f => f.Atores)
+                .WithMany(a => a.Filmes)
+                .UsingEntity<PapelEntity>(
+                    j => j.HasOne(p => p.Ator).WithMany().HasForeignKey(p => p.AtorId),
+                    j => j.HasOne(p => p.Filme).WithMany().HasForeignKey(p => p.FilmeId),
+                    j => j.Property(p => p.Personagem).HasDefaultValue("Desconhecido")
+                );
+
         }
     }
 }

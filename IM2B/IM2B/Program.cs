@@ -1,8 +1,10 @@
 using context;
-using IM2B.Models;
-using IM2B.Seeders;
+using context.Repositories;
+using context.Seeders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using shared.Interfaces;
+using shared.Models;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,10 @@ builder.Services.AddControllersWithViews();
 string? connectionString = builder.Configuration.GetConnectionString("ContainerConnection");
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("IM2B")));
+
+builder.Services.AddScoped<IGenericRepository<Filme>, FilmeRepository>();
+builder.Services.AddScoped<IGenericRepository<Ator>, AtorRepository>();
+builder.Services.AddScoped<IGenericRepository<Papel>, PapelRepository>();
 
 // Configurar Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -51,8 +57,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-    var seeder = new FilmeSeeder(db);
-    seeder.Seed(50); // generate 50 random films
+    var seeder = new Seeder(db);
+    seeder.Seed(); // generate default number random films
+    //seeder.Seed(5); // generate specified number random films
 }
 
 // Criar roles ao iniciar a aplicação

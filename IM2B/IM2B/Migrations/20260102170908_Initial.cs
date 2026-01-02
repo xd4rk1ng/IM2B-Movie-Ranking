@@ -200,7 +200,7 @@ namespace IM2B.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FilmeId = table.Column<int>(type: "int", nullable: false),
                     AtorId = table.Column<int>(type: "int", nullable: false),
-                    Personagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Personagem = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Desconhecido"),
                     Principal = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

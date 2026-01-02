@@ -1,4 +1,4 @@
-﻿namespace IM2B.Models
+﻿namespace shared.Models
 {
     public class Ator
     {

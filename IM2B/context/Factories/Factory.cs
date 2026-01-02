@@ -1,13 +1,11 @@
 ﻿using Bogus;
 using context.Entities;
 
-namespace IM2B.Factories
+namespace context.Factories
 {
-    public class FilmeFactory
+    public class Factory
     {
-        private int _nextFilmeId = 1;
-        int _nextAtorId = 1;
-        private readonly Faker _faker = new Faker("pt_PT");
+        private readonly Faker _faker = new("pt_PT");
 
         public FilmeEntity CreateRandom()
         {
@@ -19,7 +17,7 @@ namespace IM2B.Factories
                 Sinopse = _faker.Lorem.Paragraph(),
                 DataLancamento = DateOnly.FromDateTime(_faker.Date.Past(50)),
                 Duracao = TimeSpan.FromMinutes(_faker.Random.Int(80, 180)),
-                Atores = new List<AtorEntity>(), // fill later
+                Atores = [], // fill later
                 Avaliacao = _faker.Random.Int(1, 10)
             };
 
@@ -33,7 +31,7 @@ namespace IM2B.Factories
                                        DataNasc = DateOnly.FromDateTime(_faker.Date.Past(80, DateTime.Now.AddYears(-20))),
                                        DataObito = null,
                                        Biografia = _faker.Lorem.Paragraph(),
-                                       Filmes = new List<FilmeEntity> { filme } // reference back
+                                       Filmes = [filme] // reference back
                                    })
                                    .ToList();
 

@@ -7,7 +7,7 @@
         public string Sinopse { get; set; }
         public DateOnly DataLancamento { get; set; }
         public TimeSpan Duracao { get; set; }
-        public List<AtorEntity> Atores { get; set; }
+        public List<AtorEntity> Atores { get; set; } = new();
         public int Avaliacao { get; set; }
     }
 }
