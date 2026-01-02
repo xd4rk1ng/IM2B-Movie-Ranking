@@ -15,7 +15,7 @@ builder.Services.AddControllersWithViews();
 // Configurar Entity Framework e SQL Server
 string? connectionString = builder.Configuration.GetConnectionString("ContainerConnection");
 builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("IM2B")));
+    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("context")));
 
 builder.Services.AddScoped<IGenericRepository<Filme>, FilmeRepository>();
 builder.Services.AddScoped<IGenericRepository<Ator>, AtorRepository>();
