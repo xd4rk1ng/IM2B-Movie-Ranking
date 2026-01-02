@@ -5,17 +5,18 @@ using context.Entities;
 
 namespace context
 {
-    public class ApplicationContext : IdentityDbContext<User>
+    public class ApplicationContext : IdentityDbContext<UserEntity>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Filme> Filmes { get; set; }
-        public DbSet<Ator> Atores { get; set; }
-        public DbSet<Papel> Papeis { get; set; }
+        public DbSet<FilmeEntity> Filmes { get; set; }
+        public DbSet<AtorEntity> Atores { get; set; }
+        public DbSet<PapelEntity> Papeis { get; set; }
 
+        // Comentado isto, porque desta forma, o EF por algum motivo criava o Papel e o AtorFilme, que no fundo sao a mesma coisa, ou seja "duplicava" a tabela
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
         //    base.OnModelCreating(builder);
@@ -43,10 +44,10 @@ namespace context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Filme>()
+            builder.Entity<FilmeEntity>()
                 .HasMany(e => e.Atores)
                 .WithMany(e => e.Filmes)
-                .UsingEntity<Papel>();
+                .UsingEntity<PapelEntity>();
         }
     }
 }
