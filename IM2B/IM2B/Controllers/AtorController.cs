@@ -23,8 +23,8 @@ namespace IM2B.Controllers
             // TODO: var ator = _context.Atores.Include(a => a.Filmes).FirstOrDefault(a => a.Id == id);
             // if (ator == null) return NotFound();
 
-            var ator = new Ator(); // Placeholder
-            return View(ator);
+            //var ator = new Ator(); // Placeholder
+            return View(/*ator*/);
         }
 
         // Create GET - Formulário para criar novo ator
@@ -58,8 +58,8 @@ namespace IM2B.Controllers
             // TODO: var ator = _context.Atores.Find(id);
             // if (ator == null) return NotFound();
 
-            var ator = new Ator(); // Placeholder
-            return View(ator);
+            //var ator = new Ator(); // Placeholder
+            return View(/*ator*/);
         }
 
         // Edit POST - Processar edição do ator
@@ -91,8 +91,8 @@ namespace IM2B.Controllers
             // TODO: var ator = _context.Atores.Find(id);
             // if (ator == null) return NotFound();
 
-            var ator = new Ator(); // Placeholder
-            return View(ator);
+            //var ator = new Ator(); // Placeholder
+            return View(/*ator*/);
         }
 
         // Delete POST - Processar exclusão
