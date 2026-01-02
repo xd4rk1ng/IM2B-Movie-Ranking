@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using context;
 using IM2B.Models;
 using IM2B.ViewModels;
+using IM2B.Mapping;
 
 namespace IM2B.Controllers
 {
@@ -20,7 +21,7 @@ namespace IM2B.Controllers
         // Index - Listar todos os filmes
         public IActionResult Index()
         {
-            var filmes = _context.Filmes.ToList();
+            var filmes = _context.Filmes.Select(e => e.ToModel()).ToList();
             //var filmes = new List<Filme>(); // Placeholder
             return View(filmes);
         }

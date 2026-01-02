@@ -1,7 +1,9 @@
+using context;
+using IM2B.Models;
+using IM2B.Seeders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using IM2B.Models;
-using context;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +46,14 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
+
+// Fazer seeding da base de dados com filmes e atores aleatorios
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    var seeder = new FilmeSeeder(db);
+    seeder.Seed(50); // generate 50 random films
+}
 
 // Criar roles ao iniciar a aplicação
 using (var scope = app.Services.CreateScope())
