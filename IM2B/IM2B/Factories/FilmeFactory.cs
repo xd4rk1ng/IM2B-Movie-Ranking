@@ -5,7 +5,8 @@ namespace IM2B.Factories
 {
     public class FilmeFactory
     {
-        private int _nextId = 1;
+        private int _nextFilmeId = 1;
+        int _nextAtorId = 1;
         private readonly Faker _faker = new Faker("pt_PT");
 
         public FilmeEntity CreateRandom()
@@ -13,7 +14,7 @@ namespace IM2B.Factories
             // Step 1: create the film without actors yet
             var filme = new FilmeEntity
             {
-                Id = _nextId++,
+                //Id = _nextFilmeId++,
                 Titulo = _faker.Lorem.Sentence(3),
                 Sinopse = _faker.Lorem.Paragraph(),
                 DataLancamento = DateOnly.FromDateTime(_faker.Date.Past(50)),
@@ -23,11 +24,11 @@ namespace IM2B.Factories
             };
 
             // Step 2: create actors that reference this film
-            int atorId = 1;
+            
             var atores = Enumerable.Range(0, _faker.Random.Int(5, 10))
                                    .Select(_ => new AtorEntity
                                    {
-                                       Id = atorId++,
+                                       //Id = _nextAtorId++,
                                        Nome = _faker.Name.FullName(),
                                        DataNasc = DateOnly.FromDateTime(_faker.Date.Past(80, DateTime.Now.AddYears(-20))),
                                        DataObito = null,
