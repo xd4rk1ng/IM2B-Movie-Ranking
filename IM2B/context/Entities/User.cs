@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace IM2B.Models
+namespace context.Entities
+
 {
     public class User : IdentityUser
     {

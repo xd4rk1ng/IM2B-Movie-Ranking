@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using IM2B.Data;
 using IM2B.Models;
+using context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Configurar Entity Framework e SQL Server
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+string? connectionString = builder.Configuration.GetConnectionString("ContainerConnection");
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("IM2B")));
 
 // Configurar Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -30,7 +31,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     // Configurações de utilizador
     options.User.RequireUniqueEmail = true;
 })
-.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddEntityFrameworkStores<ApplicationContext>()
 .AddDefaultTokenProviders();
 
 // Configurar autenticação por cookie
