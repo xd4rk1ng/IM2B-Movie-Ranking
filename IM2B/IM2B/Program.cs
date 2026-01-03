@@ -57,9 +57,17 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-    var seeder = new Seeder(db);
-    seeder.Seed(); // generate default number random films
-    //seeder.Seed(5); // generate specified number random films
+
+    try
+    {
+        var seeder = new Seeder(db);
+        await seeder.SeedContentsAsync(); // generate default number random films
+    }
+    catch(Exception ex)
+    {
+        Console.WriteLine("Erro ao popular base de dados: " + ex.Message);
+    }
+    //seeder.SeedContentsAsync(5); // generate specified number random films
 }
 
 // Criar roles ao iniciar a aplicação
@@ -68,13 +76,11 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     try
     {
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-        await EnsureRolesAsync(roleManager);
+        await CuradorSeeder.Seed(services);
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Erro ao criar roles.");
+        Console.WriteLine("Erro ao criar roles: " + ex.Message);
     }
 }
 

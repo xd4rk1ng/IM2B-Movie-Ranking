@@ -1,6 +1,8 @@
 ﻿using Bogus;
 using context.Entities;
 using context.Factories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace context.Seeders
 {
@@ -16,7 +18,7 @@ namespace context.Seeders
             _factory = new Factory();
         }
 
-        public void Seed(int count = 10)
+        public async Task SeedContentsAsync(int count = 10)
         {
             if (_context.Filmes.Any()) return; // avoid duplicate seeding
 
@@ -41,7 +43,8 @@ namespace context.Seeders
                 _context.Papeis.AddRange(papeis);
                 _context.SaveChanges();
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
+
     }
 }

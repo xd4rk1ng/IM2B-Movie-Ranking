@@ -57,10 +57,10 @@ namespace IM2B.Controllers
 
         // Edit GET - Formulário para editar ator
         [Authorize(Roles = "Curador")]
-        [HttpGet]
-        public IActionResult Edit(int id)
+        [HttpGet("Ator/Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
         {
-            var ator = _atorRepo.GetByIdAsync(id);
+            var ator = await _atorRepo.GetByIdAsync(id);
             if (ator == null) return NotFound();
 
             return View(ator);
@@ -68,20 +68,19 @@ namespace IM2B.Controllers
 
         // Edit POST - Processar edição do ator
         [Authorize(Roles = "Curador")]
-        [HttpPost]
+        [HttpPost("Ator/Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Ator ator)
+        public async Task<IActionResult> Edit(int id, Ator ator)
         {
-            // Validação: verificar se IDs correspondem
-            // TODO: if (id != ator.Id)
-            // {
-            //     return NotFound();
-            // }
+            
+            if (id != ator.Id)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
-                // TODO: _context.Update(ator);
-                // TODO: _context.SaveChanges();
+                _atorRepo.UpdateAsync(ator);
                 return RedirectToAction(nameof(Index));
             }
             return View(ator);
