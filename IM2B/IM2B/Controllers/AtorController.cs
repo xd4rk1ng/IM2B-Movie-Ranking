@@ -1,30 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using shared.Models;
+using shared.Interfaces;
+using System.Threading.Tasks;
 
 namespace IM2B.Controllers
 {
     public class AtorController : Controller
     {
         // TODO: Adicionar DbContext quando configurar o banco de dados
-        // private readonly ApplicationDbContext _context;
+        private readonly IGenericRepository<Ator> _atorRepo;
+
+        public AtorController(IGenericRepository<Ator> atorRepo)
+        {
+            _atorRepo = atorRepo;
+        }
 
         // Index - Listar todos os atores
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // TODO: var atores = _context.Atores.ToList();
-            var atores = new List<Ator>(); // Placeholder
+            var atores = await _atorRepo.GetAllAsync();
             return View(atores);
         }
 
         // Details - Ver detalhes de um ator específico
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            // TODO: var ator = _context.Atores.Include(a => a.Filmes).FirstOrDefault(a => a.Id == id);
-            // if (ator == null) return NotFound();
+            var ator = await _atorRepo.GetByIdAsync(id);
+            if (ator == null) return NotFound();
 
-            //var ator = new Ator(); // Placeholder
-            return View(/*ator*/);
+            return View(ator);
         }
 
         // Create GET - Formulário para criar novo ator
@@ -52,32 +57,30 @@ namespace IM2B.Controllers
 
         // Edit GET - Formulário para editar ator
         [Authorize(Roles = "Curador")]
-        [HttpGet]
-        public IActionResult Edit(int id)
+        [HttpGet("Ator/Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
         {
-            // TODO: var ator = _context.Atores.Find(id);
-            // if (ator == null) return NotFound();
+            var ator = await _atorRepo.GetByIdAsync(id);
+            if (ator == null) return NotFound();
 
-            //var ator = new Ator(); // Placeholder
-            return View(/*ator*/);
+            return View(ator);
         }
 
         // Edit POST - Processar edição do ator
         [Authorize(Roles = "Curador")]
-        [HttpPost]
+        [HttpPost("Ator/Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Ator ator)
+        public async Task<IActionResult> Edit(int id, Ator ator)
         {
-            // Validação: verificar se IDs correspondem
-            // TODO: if (id != ator.Id)
-            // {
-            //     return NotFound();
-            // }
+            
+            if (id != ator.Id)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
-                // TODO: _context.Update(ator);
-                // TODO: _context.SaveChanges();
+                _atorRepo.UpdateAsync(ator);
                 return RedirectToAction(nameof(Index));
             }
             return View(ator);

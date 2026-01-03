@@ -9,6 +9,9 @@
         public string Biografia { get; set; }
         public List<Filme> Filmes { get; set; }
 
+        // Construtor Vazio (NAO REMOVER)
+        public Ator() { }
+
         // Placeholder Constructor
         public Ator(
             int id,

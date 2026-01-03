@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using context;
 using shared.Models;
 using IM2B.ViewModels;
-using context.Mappings;
 using shared.Interfaces;
 
 namespace IM2B.Controllers

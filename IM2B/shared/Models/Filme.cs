@@ -10,6 +10,9 @@
         public List<Ator> Atores { get; set; }
         public int Avaliacao { get; set; }
 
+        // Construtor Vazio (NAO REMOVER)
+        public Filme() { }
+
         // Placeholder Constructor
         public Filme(
             int id,

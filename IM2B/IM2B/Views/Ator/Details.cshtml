@@ -1,0 +1,26 @@
+﻿@model shared.Models.Ator
+
+<h2>Detalhes do Ator</h2>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9">@Model.Nome</dd>
+
+            <dt class="col-sm-3">Data de Nascimento</dt>
+            <dd class="col-sm-9">
+                @Model.DataNasc.ToString("dd/MM/yyyy")
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+        Editar
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">
+        Voltar à lista
+    </a>
+</div>

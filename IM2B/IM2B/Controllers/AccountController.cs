@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using shared.Models;
+using context.Entities;
 using IM2B.ViewModels;
 
 namespace IM2B.Controllers
@@ -88,31 +88,31 @@ namespace IM2B.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
 
-            //if (ModelState.IsValid)
-            //{
-            //    var result = await _signInManager.PasswordSignInAsync(
-            //        model.Email,
-            //        model.Password,
-            //        model.RememberMe,
-            //        lockoutOnFailure: false);
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(
+                    model.Email,
+                    model.Password,
+                    model.RememberMe,
+                    lockoutOnFailure: false);
 
-            //    if (result.Succeeded)
-            //    {
-            //        _logger.LogInformation("Utilizador autenticado com sucesso.");
-            //        return RedirectToLocal(returnUrl);
-            //    }
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Utilizador autenticado com sucesso.");
+                    return RedirectToLocal(returnUrl);
+                }
 
-            //    if (result.IsLockedOut)
-            //    {
-            //        _logger.LogWarning("Conta de utilizador bloqueada.");
-            //        return RedirectToAction(nameof(Lockout));
-            //    }
-            //    else
-            //    {
-            //        ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
-            //        return View(model);
-            //    }
-            //}
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("Conta de utilizador bloqueada.");
+                    return RedirectToAction(nameof(Lockout));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
+                    return View(model);
+                }
+            }
 
             return View(model);
         }
