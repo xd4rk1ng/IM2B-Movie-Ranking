@@ -24,25 +24,25 @@ builder.Services.AddScoped<IGenericRepository<Papel>, PapelRepository>();
 // Configurar Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
-    // Configurações de senha
+    // Configuraï¿½ï¿½es de senha
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
 
-    // Configurações de bloqueio
+    // Configuraï¿½ï¿½es de bloqueio
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
 
-    // Configurações de utilizador
+    // Configuraï¿½ï¿½es de utilizador
     options.User.RequireUniqueEmail = true;
 })
 .AddEntityFrameworkStores<ApplicationContext>()
 .AddDefaultTokenProviders();
 
-// Configurar autenticação por cookie
+// Configurar autenticaï¿½ï¿½o por cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -70,7 +70,7 @@ using (var scope = app.Services.CreateScope())
     //seeder.SeedContentsAsync(5); // generate specified number random films
 }
 
-// Criar roles ao iniciar a aplicação
+// Criar roles ao iniciar a aplicaï¿½ï¿½o
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
