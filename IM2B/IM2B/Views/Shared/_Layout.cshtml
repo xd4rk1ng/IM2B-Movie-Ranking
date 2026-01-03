@@ -1,4 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<context.Entities.User> UserManager
+
+@{   
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
+    // Get the application user and resolve the display name with fallbacks
+    var appUser = await UserManager.GetUserAsync(User);
+    string nome = appUser?.NomeCompleto
+                  ?? User.FindFirstValue(ClaimTypes.Name)
+                  ?? User.Identity?.Name
+                  ?? "Visitante";   
+}
+
+<!DOCTYPE html>
 <html lang="pt-pt">
 <head>
     <meta charset="utf-8" />
@@ -16,6 +32,7 @@
 </head>
 <body>
     <header>
+        <p>@role</p>
         <nav class="navbar navbar-expand-lg navbar-dark bg-imdb">
             <div class="container">
                 <a class="navbar-brand" href="/">
@@ -27,12 +44,12 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Filmes" asp-action="Index">
+                            <a class="nav-link" asp-controller="Filme" asp-action="Index">
                                 <i class="fas fa-video"></i> Filmes
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Atores" asp-action="Index">
+                            <a class="nav-link" asp-controller="Ator" asp-action="Index">
                                 <i class="fas fa-star"></i> Atores
                             </a>
                         </li>
@@ -44,11 +61,31 @@
                         </a>
                     </div>
 
-                    <div class="navbar-nav">
-                        <a class="nav-link" asp-controller="Account" asp-action="Login" >
-                            Login
-                        </a>
-                    </div>
+                    @if (role == "Visitante")
+                    {
+                        <div class="navbar-nav">
+                            <a class="nav-link" asp-controller="Account" asp-action="Login" >
+                                Login
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        if (role == "Utilizador")
+                        {
+                            <p>Welcome, @nome</p>
+                        }
+                        else
+                        {
+                            <p>Welcome, Administrator.</p>                   
+                        }
+                        <div class="navbar-nav">
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-link nav-link">Logout</button>
+                            </form>
+                        </div>
+                    }
 
                     <!-- Área de autenticação -->
                     <!-- <partial name="_LoginPartial" /> -->
