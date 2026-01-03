@@ -416,3 +416,5 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+IM2B/context/Entities/Papel.cs
+IM2B/context/Entities/User.cs

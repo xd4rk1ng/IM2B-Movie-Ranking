@@ -1,21 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using IM2B.Models;
+using context;
+using shared.Models;
 using IM2B.ViewModels;
+using context.Mappings;
+using shared.Interfaces;
 
 namespace IM2B.Controllers
 {
     public class FilmeController : Controller
     {
         // TODO: Adicionar DbContext quando configurar o banco de dados
-        // private readonly ApplicationDbContext _context;
+        private readonly IGenericRepository<Filme> _filmeRepo;
+
+        public FilmeController(IGenericRepository<Filme> filmeRepo)
+        {
+            _filmeRepo = filmeRepo;
+        }
 
         // Index - Listar todos os filmes
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // TODO: var filmes = _context.Filmes.ToList();
-            var filmes = new List<Filme>(); // Placeholder
+            var filmes = await _filmeRepo.GetAllAsync();
+            //var filmes = new List<Filme>(); // Placeholder
             return View(filmes);
         }
 
@@ -25,8 +33,8 @@ namespace IM2B.Controllers
             // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
             // if (filme == null) return NotFound();
 
-            var filme = new Filme(); // Placeholder
-            return View(filme);
+            //var filme = new Filme(); // Placeholder
+            return View(/*filme*/);
         }
 
         // Create GET - Formulário para criar novo filme
@@ -60,8 +68,8 @@ namespace IM2B.Controllers
             // TODO: var filme = _context.Filmes.Find(id);
             // if (filme == null) return NotFound();
 
-            var filme = new Filme(); // Placeholder
-            return View(filme);
+            //var filme = new Filme(); // Placeholder
+            return View(/*filme*/);
         }
 
         // Edit POST - Processar edição do filme
@@ -92,8 +100,8 @@ namespace IM2B.Controllers
             // TODO: var filme = _context.Filmes.Find(id);
             // if (filme == null) return NotFound();
 
-            var filme = new Filme(); // Placeholder
-            return View(filme);
+            //var filme = new Filme(); // Placeholder
+            return View(/*filme*/);
         }
 
         // Delete POST - Processar exclusão

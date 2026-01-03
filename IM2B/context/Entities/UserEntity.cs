@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace IM2B.Models
+namespace context.Entities
 
 {
-    public class User : IdentityUser
+    public class UserEntity : IdentityUser
     {
         public string NomeCompleto { get; set; }
 
