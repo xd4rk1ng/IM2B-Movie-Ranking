@@ -1,7 +1,11 @@
+using context;
+using context.Repositories;
+using context.Seeders;
+using context.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using IM2B.Data;
-using IM2B.Models;
+using shared.Interfaces;
+using shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Configurar Entity Framework e SQL Server
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+string? connectionString = builder.Configuration.GetConnectionString("ContainerConnection");
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("context")));
+
+builder.Services.AddScoped<IGenericRepository<Filme>, FilmeRepository>();
+builder.Services.AddScoped<IGenericRepository<Ator>, AtorRepository>();
+builder.Services.AddScoped<IGenericRepository<Papel>, PapelRepository>();
 
 // Configurar Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -30,7 +39,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     // Configurações de utilizador
     options.User.RequireUniqueEmail = true;
 })
-.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddEntityFrameworkStores<ApplicationContext>()
 .AddDefaultTokenProviders();
 
 // Configurar autenticação por cookie
@@ -43,6 +52,15 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
+
+// Fazer seeding da base de dados com filmes e atores aleatorios
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    var seeder = new Seeder(db);
+    seeder.Seed(); // generate default number random films
+    //seeder.Seed(5); // generate specified number random films
+}
 
 // Criar roles ao iniciar a aplicação
 using (var scope = app.Services.CreateScope())
