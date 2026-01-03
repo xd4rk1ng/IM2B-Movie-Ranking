@@ -52,11 +52,7 @@ namespace IM2B.Controllers
                 {
                     _logger.LogInformation("Utilizador criado com sucesso.");
 
-                    // Adicionar role Curador se aplicável
-                    if (model.IsCurador)
-                    {
-                        await _userManager.AddToRoleAsync(user, "Curador");
-                    }
+                    await _userManager.AddToRoleAsync(user, "Utilizador");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");

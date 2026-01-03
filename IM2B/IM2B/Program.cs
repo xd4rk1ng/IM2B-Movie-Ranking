@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Configurar Entity Framework e SQL Server
-string? connectionString = builder.Configuration.GetConnectionString("ContainerConnection");
+string? connectionString = builder.Configuration.GetConnectionString("SergioConnection");
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("context")));
 
