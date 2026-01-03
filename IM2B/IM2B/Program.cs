@@ -1,11 +1,11 @@
 using context;
 using context.Repositories;
 using context.Seeders;
+using context.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using shared.Interfaces;
 using shared.Models;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 

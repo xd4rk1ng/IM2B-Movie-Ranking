@@ -1,6 +1,4 @@
-﻿using shared.Models;
-
-namespace shared.Interfaces
+﻿namespace shared.Interfaces
 {
     public interface IGenericRepository <Model>
         where Model : class
