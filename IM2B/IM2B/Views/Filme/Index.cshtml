@@ -1,15 +1,31 @@
 ﻿@model IEnumerable<shared.Models.Filme>
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<context.Entities.User> UserManager
 
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
+    // Gets the user from the user manager and then searches for the full name
+    var appUser = await UserManager.GetUserAsync(User);
+    string nome = appUser?.NomeCompleto
+                  ?? User.FindFirstValue(ClaimTypes.Name)
+                  ?? User.Identity?.Name
+                  ?? "Visitante";
+
     ViewData["Title"] = "Lista de Filmes";
 }
 
 <div class="hero-section">
     <div class="container">
         <h2 class="mb-3"><i class="fas fa-film"></i> Lista de Filmes</h2>
-        <a class="btn btn-imdb" asp-action="Create">
-            <i class="fas fa-plus-circle"></i> Adicionar Novo Filme
-        </a>
+        @if (role == "Curador")
+        {
+            <a class="btn btn-imdb" asp-action="Create">
+                <i class="fas fa-plus-circle"></i> Adicionar Novo Filme
+            </a>
+        }
     </div>
 </div>
 
@@ -54,12 +70,16 @@ else
                             <a asp-action="Details" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-warning me-1" title="Ver Detalhes">
                                 <i class="fas fa-eye"></i> Detalhes
                             </a>
-                            <a asp-action="Edit" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-primary me-1" title="Editar">
-                                <i class="fas fa-edit"></i> Editar
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-danger" title="Apagar">
-                                <i class="fas fa-trash"></i> Apagar
-                            </a>
+                            @if (role == "Curador")
+                            {
+                                ﻿<a asp-action="Edit" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-danger" title="Apagar">
+                                    <i class="fas fa-trash"></i> Apagar
+                                </a>
+                            }
+                            
                         </td>
                     </tr>
                 }
