@@ -1,0 +1,99 @@
+﻿@model shared.Models.Filme
+
+@{
+    ViewData["Title"] = "Editar Filme";
+}
+
+<div class="hero-section">
+    <div class="container">
+        <h2 class="mb-3"><i class="fas fa-edit"></i> Editar Filme</h2>
+        <p class="text-muted">Apenas curadores podem editar filmes</p>
+    </div>
+</div>
+
+<div class="card bg-dark text-light border-warning">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            @* Hidden Id for Edit *@
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Titulo" class="form-label">
+                    <i class="fas fa-heading"></i> Título
+                </label>
+                <input asp-for="Titulo" class="form-control bg-dark text-light border-secondary" placeholder="Digite o título do filme" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Sinopse" class="form-label">
+                    <i class="fas fa-align-left"></i> Sinopse
+                </label>
+                <textarea asp-for="Sinopse" class="form-control bg-dark text-light border-secondary" rows="5" placeholder="Descreva o enredo do filme"></textarea>
+                <span asp-validation-for="Sinopse" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="DataLancamento" class="form-label">
+                            <i class="fas fa-calendar-alt"></i> Data de Lançamento
+                        </label>
+                        <input asp-for="DataLancamento" class="form-control bg-dark text-light border-secondary" type="date" />
+                        <span asp-validation-for="DataLancamento" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Duracao" class="form-label">
+                            <i class="fas fa-clock"></i> Duração (HH:MM:SS)
+                        </label>
+                        <input asp-for="Duracao" class="form-control bg-dark text-light border-secondary" type="time" />
+                        <span asp-validation-for="Duracao" class="text-danger"></span>
+                        <small class="form-text text-muted">Formato: Horas:Minutos:Segundos</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Avaliacao" class="form-label">
+                    <i class="fas fa-star"></i> Avaliação (1-5)
+                </label>
+                <select asp-for="Avaliacao" class="form-select bg-dark text-light border-secondary">
+                    <option value="1">⭐ 1 - Fraco</option>
+                    <option value="2">⭐⭐ 2 - Regular</option>
+                    <option value="3">⭐⭐⭐ 3 - Bom</option>
+                    <option value="4">⭐⭐⭐⭐ 4 - Muito Bom</option>
+                    <option value="5">⭐⭐⭐⭐⭐ 5 - Excelente</option>
+                </select>
+                <span asp-validation-for="Avaliacao" class="text-danger"></span>
+            </div>
+
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Atenção!</strong> Ao clicar em "Salvar Alterações", as informações do filme serão atualizadas permanentemente.
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-check"></i> Salvar Alterações
+                </button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                <a asp-action="Index" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left"></i> Voltar à lista
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

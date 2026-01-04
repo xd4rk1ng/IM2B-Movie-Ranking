@@ -20,15 +20,18 @@
 
     <div class="form-group mb-3">
         <label asp-for="DataNasc" class="form-label"></label>
-        <input asp-for="DataNasc" class="form-control" type="date" />
+        <input asp-for="DataNasc" class="form-control" type="date"
+               value="@(Model.DataNasc.ToString("yyyy-MM-dd"))" />
         <span asp-validation-for="DataNasc" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="DataObito" class="form-label"></label>
-        <input asp-for="DataObito" class="form-control" type="date" />
+        <input asp-for="DataObito" class="form-control" type="date"
+               value="@(Model.DataObito.HasValue? Model.DataObito.Value.ToString("yyyy-MM-dd") : "")" />
         <span asp-validation-for="DataObito" class="text-danger"></span>
     </div>
+
 
     <div class="form-group mb-3">
         <label asp-for="Biografia" class="form-label"></label>
