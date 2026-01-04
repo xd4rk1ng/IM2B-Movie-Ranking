@@ -1,6 +1,9 @@
 ﻿@model IM2B.ViewModels.Filme.DetailsFilmeViewModel
 
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
     ViewData["Title"] = "Detalhes do Filme";
 }
 
@@ -83,7 +86,7 @@
 </div>
 
 <div class="mt-4">
-    @if (User.IsInRole("Curador"))
+    @if (role == "Curador")
     {
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
             <i class="fas fa-edit"></i> Editar

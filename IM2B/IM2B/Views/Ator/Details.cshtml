@@ -1,6 +1,9 @@
 ﻿@model IM2B.ViewModels.Ator.DetailsAtorViewModel
 
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
     ViewData["Title"] = "Detalhes do Ator";
 }
 
@@ -121,7 +124,7 @@
 </div>
 
 <div class="mt-4">
-    @if (User.IsInRole("Curador"))
+    @if (role == "Curador")
     {
         <a asp-action="Edit"
            asp-route-id="@Model.Id"

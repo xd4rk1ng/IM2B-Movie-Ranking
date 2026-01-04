@@ -1,18 +1,26 @@
 ﻿@model IEnumerable<shared.Models.Ator>
+@using System.Security.Claims
 
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
     ViewData["Title"] = "Lista de Atores";
 }
 
 <div class="hero-section">
     <div class="container">
         <h2 class="mb-3">
-            <i class="fas fa-user"></i> Lista de Atores
+            <i class="fas fa-user"></i>Lista de Atores
         </h2>
 
-        <a class="btn btn-imdb" asp-action="Create">
-            <i class="fas fa-plus-circle"></i> Registar Novo Ator
-        </a>
+        @if (role == "Curador") 
+        {
+            <a class="btn btn-imdb" asp-action="Create">
+                <i class="fas fa-plus-circle"></i> Registar Novo Ator
+            </a>
+        }
+        
     </div>
 </div>
 
@@ -58,25 +66,27 @@ else
                                title="Ver Detalhes">
                                 <i class="fas fa-eye"></i> Detalhes
                             </a>
+                            
+                            @if (role == "Curador") {
+                                <a asp-action="Edit"
+                                asp-route-id="@ator.Id"
+                                class="btn btn-sm btn-outline-primary me-1"
+                                title="Editar">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
 
-                            <a asp-action="Edit"
-                               asp-route-id="@ator.Id"
-                               class="btn btn-sm btn-outline-primary me-1"
-                               title="Editar">
-                                <i class="fas fa-edit"></i> Editar
-                            </a>
-
-                            <form asp-action="Delete"
-                                  asp-route-id="@ator.Id"
-                                  method="post"
-                                  class="d-inline"
-                                  onsubmit="return confirm('Tem certeza que deseja apagar este ator?');">
-                                <button type="submit"
-                                        class="btn btn-sm btn-outline-danger"
-                                        title="Apagar">
-                                    <i class="fas fa-trash"></i> Apagar
-                                </button>
-                            </form>
+                                <form asp-action="Delete"
+                                    asp-route-id="@ator.Id"
+                                    method="post"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Tem certeza que deseja apagar este ator?');">
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                            title="Apagar">
+                                        <i class="fas fa-trash"></i> Apagar
+                                    </button>
+                                </form>
+                            }
                         </td>
                     </tr>
                 }
