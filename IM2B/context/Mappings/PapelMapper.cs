@@ -14,7 +14,7 @@ namespace context.Mappings
                 entity.FilmeId,
                 entity.Filme.ToModel(),
                 entity.AtorId,
-                entity.Ator.ToModel(),
+                entity.Ator?.ToModel() ?? new Ator(),
                 entity.Personagem,
                 entity.Principal
             );

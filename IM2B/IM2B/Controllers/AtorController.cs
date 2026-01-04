@@ -11,10 +11,12 @@ namespace IM2B.Controllers
     {
         // TODO: Adicionar DbContext quando configurar o banco de dados
         private readonly IGenericRepository<Ator> _atorRepo;
+        private readonly IPapelRepository<Papel> _papelRepo;
 
-        public AtorController(IGenericRepository<Ator> atorRepo)
+        public AtorController(IGenericRepository<Ator> atorRepo, IPapelRepository<Papel> papelRepo)
         {
             _atorRepo = atorRepo;
+            _papelRepo = papelRepo;
         }
 
         // Index - Listar todos os atores
@@ -34,6 +36,17 @@ namespace IM2B.Controllers
             var ator = await _atorRepo.GetByIdAsync(id);
             if (ator == null) return NotFound();
 
+            var papeis = await _papelRepo.GetAllForAtorIdAsync(id);
+            var papeisVm = papeis.Select(p => new PapelViewModel
+            {
+                Id = p.Id,
+                FilmeId = p.FilmeId,
+                FilmeTitulo = p.Filme.Titulo,  // assuming p.Filme is included
+                Personagem = p.Personagem,
+                Principal = p.Principal,
+                DataLancamento = p.Filme.DataLancamento
+            }).ToList();
+
             var vm = new DetailsAtorViewModel()
             {
                 Id = ator.Id,
@@ -41,6 +54,7 @@ namespace IM2B.Controllers
                 Biografia = ator.Biografia,
                 DataNasc = ator.DataNasc,
                 DataObito = ator.DataObito,
+                Papeis = papeisVm,
             };
 
             return View(vm);

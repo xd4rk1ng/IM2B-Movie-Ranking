@@ -31,19 +31,47 @@
             </p>
         }
 
-        @* Optional: display related movies *@
-@*         @if (Model.Filmes != null && Model.Filmes.Any())
-        {
-            <p><strong>Filmes:</strong></p>
-            <ul>
-                @foreach (var filme in Model.Filmes)
-                {
-                    <li>@filme.Titulo (@filme.Ano)</li>
-                }
-            </ul>
-        } *@
-
         <a asp-action="Index" class="btn btn-secondary mt-3">Voltar</a>
-        <a asp-action="Edit" asp-route-id="@Model.Nome" class="btn btn-warning mt-3">Editar</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mt-3">Editar</a>
     </div>
+
+@if (Model.Papeis != null && Model.Papeis.Any())
+{
+    <h4>Filmes em que participou:</h4>
+
+    <div id="atorPapeisCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Papeis.Count; i++)
+            {
+                var filme = Model.Papeis[i];
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <div class="card" style="width: 200px; margin:auto;">
+                        @* Optional Poster
+                        @* <img src="@filme.PosterUrl" class="card-img-top" alt="@filme.FilmeTitulo" /> *@
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@filme.FilmeTitulo (@filme.DataLancamento.Year)</h5>
+                            <p class="card-text"><small>Personagem: @filme.Personagem</small></p>
+                            <a asp-controller="Filme" asp-action="Details" asp-route-id="@filme.FilmeId" class="btn btn-primary btn-sm">
+                                Ver Filme
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#atorPapeisCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#atorPapeisCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Próximo</span>
+        </button>
+    </div>
+}
+else
+{
+    <p class="text-muted text-center"><em>Este ator ainda não participou de nenhum filme.</em></p>
+}
 </div>

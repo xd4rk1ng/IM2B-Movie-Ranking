@@ -8,14 +8,13 @@ namespace context.Mappings
         public static Ator ToModel(this AtorEntity entity)
         {
             // Usa-se o construtor da classe para permitir validacoes e logica de negocio
-            return new
-            (
+            return new Ator(
                 entity.Id,
                 entity.Nome,
                 entity.DataNasc,
                 entity.DataObito,
                 entity.Biografia,
-                entity.Filmes.Select(e => e.ToModel()).ToList()
+                entity.Filmes?.Select(e => e.ToModel()).ToList() ?? new List<Filme>()
             );
         }
 
