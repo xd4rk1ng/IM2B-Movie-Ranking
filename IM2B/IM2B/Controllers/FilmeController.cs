@@ -146,34 +146,12 @@ namespace IM2B.Controllers
             return View(vm);
         }
 
-        // Delete GET - Confirmar exclusão
-        [Authorize(Roles = "Curador")]
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var filme = await _filmeRepo.GetByIdAsync(id);
-            if (filme == null) return NotFound();
-
-            return View(filme);
-        }
-        // public IActionResult Delete(int id)
-        // {
-        // TODO: var filme = _context.Filmes.Find(id);
-        // if (filme == null) return NotFound();
-
-        //var filme = new Filme(); // Placeholder
-        //     return View(/*filme*/);
-        // }
-
         // Delete POST - Processar exclusão
         [Authorize(Roles = "Curador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            // TODO: var filme = _context.Filmes.Find(id);
-            // TODO: _context.Filmes.Remove(filme);
-            // TODO: _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
