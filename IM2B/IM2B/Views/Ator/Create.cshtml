@@ -4,38 +4,82 @@
     ViewData["Title"] = "Criar Ator";
 }
 
-<h2>@ViewData["Title"]</h2>
-
-<form asp-action="Create" method="post" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    <div class="form-group mb-3">
-        <label asp-for="Nome" class="form-label"></label>
-        <input asp-for="Nome" class="form-control" />
-        <span asp-validation-for="Nome" class="text-danger"></span>
+<div class="hero-section">
+    <div class="container">
+        <h2 class="mb-3"><i class="fas fa-user-plus"></i> Adicionar Novo Ator</h2>
+        <p class="text-muted">Apenas curadores podem adicionar atores ao catálogo</p>
     </div>
+</div>
 
-    <div class="form-group mb-3">
-        <label asp-for="DataNasc" class="form-label"></label>
-        <input asp-for="DataNasc" class="form-control" type="date" />
-        <span asp-validation-for="DataNasc" class="text-danger"></span>
+<div class="card bg-dark text-light border-warning">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Nome" class="form-label">
+                    <i class="fas fa-user"></i> Nome
+                </label>
+                <input asp-for="Nome"
+                       class="form-control bg-dark text-light border-secondary"
+                       placeholder="Digite o nome do ator" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="DataNasc" class="form-label">
+                            <i class="fas fa-birthday-cake"></i> Data de Nascimento
+                        </label>
+                        <input asp-for="DataNasc"
+                               type="date"
+                               class="form-control bg-dark text-light border-secondary" />
+                        <span asp-validation-for="DataNasc" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="DataObito" class="form-label">
+                            <i class="fas fa-cross"></i> Data de Óbito
+                        </label>
+                        <input asp-for="DataObito"
+                               type="date"
+                               class="form-control bg-dark text-light border-secondary" />
+                        <span asp-validation-for="DataObito" class="text-danger"></span>
+                        <small class="text-muted">Opcional</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Biografia" class="form-label">
+                    <i class="fas fa-align-left"></i> Biografia
+                </label>
+                <textarea asp-for="Biografia"
+                          rows="5"
+                          class="form-control bg-dark text-light border-secondary"
+                          placeholder="Breve biografia do ator"></textarea>
+                <span asp-validation-for="Biografia" class="text-danger"></span>
+            </div>
+
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Atenção!</strong> Ao clicar em "Criar Ator", as informações serão adicionadas permanentemente.
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Criar Ator
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </form>
     </div>
-
-    <div class="form-group mb-3">
-        <label asp-for="DataObito" class="form-label"></label>
-        <input asp-for="DataObito" class="form-control" type="date" />
-        <span asp-validation-for="DataObito" class="text-danger"></span>
-    </div>
-
-    <div class="form-group mb-3">
-        <label asp-for="Biografia" class="form-label"></label>
-        <textarea asp-for="Biografia" class="form-control" rows="5"></textarea>
-        <span asp-validation-for="Biografia" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Criar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+</div>
 
 @section Scripts {
     @{

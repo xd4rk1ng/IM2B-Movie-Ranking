@@ -8,6 +8,10 @@ namespace IM2B.ViewModels
         [Display(Name = "Nome Completo")]
         public string NomeCompleto { get; set; }
 
+        [Required(ErrorMessage = "O username é obrigatório")]
+        [Display(Name = "Nome de Usuario")]
+        public string UserName { get; set; }
+
         [Required(ErrorMessage = "O email é obrigatório")]
         [EmailAddress(ErrorMessage = "Email inválido")]
         [Display(Name = "Email")]

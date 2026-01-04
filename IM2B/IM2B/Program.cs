@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using shared.Interfaces;
 using shared.Models;
 
-string ConnectionSelector()
+static string ConnectionSelector()
 {
     while (true)
     {
@@ -50,7 +50,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 builder.Services.AddScoped<IGenericRepository<Filme>, FilmeRepository>();
 builder.Services.AddScoped<IGenericRepository<Ator>, AtorRepository>();
-builder.Services.AddScoped<IGenericRepository<Papel>, PapelRepository>();
+builder.Services.AddScoped<IPapelRepository<Papel>, PapelRepository>();
 
 // Configurar Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -135,15 +135,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
-{
-    var roles = new[] { "Curador", "Utilizador" };
-    foreach (var role in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(role))
-        {
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
-    }
-}

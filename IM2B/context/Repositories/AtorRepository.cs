@@ -22,6 +22,13 @@ namespace context.Repositories
                 .Select(a => a.ToModel())
                 .FirstOrDefaultAsync();
 
+        public async Task<List<Ator>> GetByNameAsync(string name) =>
+            await _context.Atores
+                .AsNoTracking()
+                .Where(a => a.Nome == name)
+                .Select(a => a.ToModel())
+                .ToListAsync();
+
         public async Task<List<Ator>> GetAllAsync() =>
             await _context.Atores
                 .AsNoTracking()

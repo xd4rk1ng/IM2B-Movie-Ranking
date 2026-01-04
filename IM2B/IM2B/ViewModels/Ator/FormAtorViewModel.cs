@@ -12,10 +12,12 @@ namespace IM2B.ViewModels.Ator
         [Required(ErrorMessage = "A data de nascimento é obrigatória.")]
         [DataType(DataType.Date)]
         [Display(Name = "Data de Nascimento")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateOnly DataNasc { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Data de Óbito")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateOnly? DataObito { get; set; }
 
         [Required(ErrorMessage = "A biografia é obrigatória.")]

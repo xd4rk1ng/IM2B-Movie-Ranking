@@ -8,13 +8,19 @@
 
 <form asp-action="Register" asp-controller="Account" method="post" novalidate>
     <div class="mb-3">
-        <label for="nomecompleto" class="form-label">Nome:</label>
+        <label for="nomecompleto" class="form-label">Nome Completo:</label>
         <input autofocus
                type="text"
                class="form-control"
                id="nomecompleto"
                asp-for="NomeCompleto" />
         <span asp-validation-for="NomeCompleto" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" asp-for="UserName" />
+        <span asp-validation-for="UserName" class="text-danger small"></span>
     </div>
 
     <div class="mb-3">
@@ -35,7 +41,7 @@
     </div>
 
     <div>
-        <button type="submit" class="btn btn-primary btn-login">Login</button>
+        <button type="submit" class="btn btn-primary btn-login">Registrar utilizador</button>
     </div>
 
     <div class="mt-3">

@@ -16,9 +16,17 @@ namespace context.Repositories
 
         public async Task<Filme?> GetByIdAsync(int id) =>
             await _context.Filmes
+                .AsNoTracking()
                 .Where(f => f.Id == id)
                 .Select(f => f.ToModel())
                 .FirstOrDefaultAsync();
+
+        public async Task<List<Filme>> GetByNameAsync(string name) =>
+            await _context.Filmes
+                .AsNoTracking()
+                .Where(a => a.Titulo == name)
+                .Select(a => a.ToModel())
+                .ToListAsync();
 
         public async Task<List<Filme>> GetAllAsync() =>
             await _context.Filmes

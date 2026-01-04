@@ -11,16 +11,22 @@ namespace IM2B.Controllers
     {
         // TODO: Adicionar DbContext quando configurar o banco de dados
         private readonly IGenericRepository<Ator> _atorRepo;
+        private readonly IPapelRepository<Papel> _papelRepo;
 
-        public AtorController(IGenericRepository<Ator> atorRepo)
+        public AtorController(IGenericRepository<Ator> atorRepo, IPapelRepository<Papel> papelRepo)
         {
             _atorRepo = atorRepo;
+            _papelRepo = papelRepo;
         }
 
         // Index - Listar todos os atores
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
             var atores = await _atorRepo.GetAllAsync();
+            if (!string.IsNullOrWhiteSpace(search))
+                atores = atores.Where(a => a.Nome.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            ViewData["CurrentSearch"] = search ?? "";
             return View(atores);
         }
 
@@ -30,7 +36,28 @@ namespace IM2B.Controllers
             var ator = await _atorRepo.GetByIdAsync(id);
             if (ator == null) return NotFound();
 
-            return View(ator);
+            var papeis = await _papelRepo.GetAllForAtorIdAsync(id);
+            var papeisVm = papeis.Select(p => new PapelViewModel
+            {
+                Id = p.Id,
+                FilmeId = p.FilmeId,
+                FilmeTitulo = p.Filme.Titulo,  // assuming p.Filme is included
+                Personagem = p.Personagem,
+                Principal = p.Principal,
+                DataLancamento = p.Filme.DataLancamento
+            }).ToList();
+
+            var vm = new DetailsAtorViewModel()
+            {
+                Id = ator.Id,
+                Nome = ator.Nome,
+                Biografia = ator.Biografia,
+                DataNasc = ator.DataNasc,
+                DataObito = ator.DataObito,
+                Papeis = papeisVm,
+            };
+
+            return View(vm);
         }
 
         // Create GET - Formulário para criar novo ator
@@ -112,34 +139,23 @@ namespace IM2B.Controllers
             return View(vm);
         }
 
-        // Delete GET - Confirmar exclusão
-        [Authorize(Roles = "Curador")]
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            // TODO: var ator = _context.Atores.Find(id);
-            // if (ator == null) return NotFound();
-
-            //var ator = new Ator(); // Placeholder
-            return View(/*ator*/);
-        }
-
         // Delete POST - Processar exclusão
         [Authorize(Roles = "Curador")]
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            // TODO: var ator = _context.Atores.Include(a => a.Filmes).FirstOrDefault(a => a.Id == id);
-            // if (ator == null) return NotFound();
+            // So para ter meeeesmo a certeza
+            var result = await _atorRepo.GetByIdAsync(id);
+            if (result == null)
+                return NotFound();
 
-            // TODO: _context.Atores.Remove(ator);
-            // TODO: _context.SaveChanges();
+            await _atorRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         // Buscar - Pesquisar atores por nome
-        public IActionResult Buscar(string termo)
+        public IActionResult Search(string termo)
         {
             if (string.IsNullOrWhiteSpace(termo))
             {

@@ -12,9 +12,9 @@ namespace context.Mappings
             (
                 entity.Id,
                 entity.FilmeId,
-                entity.Filme.ToModel(),
+                entity.Filme?.ToModel() ?? new Filme(),
                 entity.AtorId,
-                entity.Ator.ToModel(),
+                entity.Ator?.ToModel() ?? new Ator(),
                 entity.Personagem,
                 entity.Principal
             );

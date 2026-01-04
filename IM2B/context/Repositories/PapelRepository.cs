@@ -5,7 +5,7 @@ using context.Mappings;
 
 namespace context.Repositories
 {
-    public class PapelRepository : IGenericRepository<Papel>
+    public class PapelRepository : IPapelRepository<Papel>
     {
         private readonly ApplicationContext _context;
 
@@ -20,8 +20,30 @@ namespace context.Repositories
                 .Select(p => p.ToModel())
                 .FirstOrDefaultAsync();
 
+        public async Task<List<Papel>> GetByNameAsync(string name) =>
+            await _context.Papeis
+                .AsNoTracking()
+                .Where(a => a.Personagem == name)
+                .Select(a => a.ToModel())
+                .ToListAsync();
+
         public async Task<List<Papel>> GetAllAsync() =>
             await _context.Papeis
+                .Select(e => e.ToModel())
+                .ToListAsync();
+
+        public async Task<List<Papel>> GetAllForAtorIdAsync(int id) =>
+            await _context.Papeis
+                .Where(p => p.AtorId == id)
+                .Include(p => p.Filme)
+                .Select(e => e.ToModel())
+                .ToListAsync();
+    
+
+        public async Task<List<Papel>> GetAllForFilmeIdAsync(int id) =>
+            await _context.Papeis
+                .Where(p => p.FilmeId == id)
+                .Include(p => p.Ator)
                 .Select(e => e.ToModel())
                 .ToListAsync();
 
