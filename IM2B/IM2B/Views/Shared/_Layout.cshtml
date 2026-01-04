@@ -73,11 +73,11 @@
                     {
                         if (role == "Utilizador")
                         {
-                            <p>Welcome, @nome</p>
+                            <span class="nav-link">Welcome, @nome</span>
                         }
                         else
                         {
-                            <p>Welcome, Administrator.</p>                   
+                            <span class="nav-link">Welcome, Curador.</span>
                         }
                         <div class="navbar-nav">
                             <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
