@@ -4,6 +4,7 @@ using shared.Models;
 using IM2B.ViewModels;
 using shared.Interfaces;
 using IM2B.ViewModels.Filme;
+using System.Threading.Tasks;
 
 namespace IM2B.Controllers
 {
@@ -63,39 +64,35 @@ namespace IM2B.Controllers
             return View(vm);
         }
 
-
-
-
-        //public IActionResult Details(int id)
-        //{
-        // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
-        // if (filme == null) return NotFound();
-
-        //var filme = new Filme(); // Placeholder
-        //    return View(/*filme*/);
-        //}
-
         // Create GET - Formulário para criar novo filme
         [Authorize(Roles = "Curador")]
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var vm = new FormFilmeViewModel();
+            return View(vm);
         }
 
         // Create POST - Processar criação do filme
         [Authorize(Roles = "Curador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Filme filme)
+        public async Task<IActionResult> Create(FormFilmeViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                // TODO: _context.Filmes.Add(filme);
-                // TODO: _context.SaveChanges();
+                var filme = new Filme
+                {
+                    Titulo = vm.Titulo,
+                    Sinopse = vm.Sinopse,
+                    DataLancamento = vm.DataLancamento,
+                    Duracao = vm.Duracao,
+                    Avaliacao = vm.Avaliacao,
+                };
+                int filmeId = await _filmeRepo.AddAsync(filme);
                 return RedirectToAction(nameof(Index));
             }
-            return View(filme);
+            return View(vm);
         }
 
         // Edit GET - Formulário para editar filme
