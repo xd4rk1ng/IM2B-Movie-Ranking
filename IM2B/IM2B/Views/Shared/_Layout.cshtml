@@ -6,7 +6,7 @@
     string role = User.IsInRole("Curador") ? "Curador" :
                   User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
 
-    // Get the application user and resolve the display name with fallbacks
+    // Gets the user from the user manager and then searches for the full name
     var appUser = await UserManager.GetUserAsync(User);
     string nome = appUser?.NomeCompleto
                   ?? User.FindFirstValue(ClaimTypes.Name)
@@ -55,11 +55,14 @@
                         </li>
                     </ul>
 
-                    <div class="navbar-nav">
-                        <a class="nav-link" asp-controller="AreaExclusiva" asp-action="Index" style="color: #ffc107;">
-                            <i class="fas fa-lock me-1"></i> Área Exclusiva
-                        </a>
-                    </div>
+                    @if (role == "Curador")
+                    {
+                        <div class="navbar-nav">
+                            <a class="nav-link" asp-controller="AreaExclusiva" asp-action="Index" style="color: #ffc107;">
+                                <i class="fas fa-lock me-1"></i> Área Exclusiva
+                            </a>
+                        </div>
+                    }
 
                     @if (role == "Visitante")
                     {
@@ -71,14 +74,16 @@
                     }
                     else
                     {
-                        if (role == "Utilizador")
-                        {
-                            <p>Welcome, @nome</p>
-                        }
-                        else
-                        {
-                            <p>Welcome, Administrator.</p>                   
-                        }
+                        <div class="navbar-nav">
+                            @if (role == "Utilizador")
+                            {
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">@nome</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">Administrator</a>
+                            }
+                        </div>
                         <div class="navbar-nav">
                             <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()

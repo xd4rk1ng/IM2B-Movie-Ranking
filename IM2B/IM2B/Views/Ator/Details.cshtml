@@ -1,77 +1,139 @@
 ﻿@model IM2B.ViewModels.Ator.DetailsAtorViewModel
 
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
     ViewData["Title"] = "Detalhes do Ator";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="hero-section">
+    <div class="container">
+        <h2 class="mb-3">
+            <i class="fas fa-user"></i> Detalhes do Ator
+        </h2>
+    </div>
+</div>
 
-<div class="card mb-3">
+<div class="card bg-dark text-light border-warning">
+    <div class="card-header bg-imdb">
+        <h3 class="mb-0">@Model.Nome</h3>
+    </div>
+
     <div class="card-body">
-        <h3 class="card-title">@Model.Nome</h3>
+        <dl class="row">
+            <dt class="col-sm-3">
+                <i class="fas fa-calendar-alt"></i> Data de Nascimento
+            </dt>
+            <dd class="col-sm-9">
+                @Model.DataNasc.ToString("dd/MM/yyyy")
+            </dd>
 
-        <p>
-            <strong>Data de Nascimento:</strong>
-            @Model.DataNasc.ToString("dd/MM/yyyy")
-        </p>
-
-        @if (Model.DataObito.HasValue)
-        {
-            <p>
-                <strong>Data de Óbito:</strong>
-                @Model.DataObito.Value.ToString("dd/MM/yyyy")
-            </p>
-        }
-
-        @if (!string.IsNullOrWhiteSpace(Model.Biografia))
-        {
-            <p>
-                <strong>Biografia:</strong><br />
-                @Model.Biografia
-            </p>
-        }
-
-        <a asp-action="Index" class="btn btn-secondary mt-3">Voltar</a>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mt-3">Editar</a>
-    </div>
-
-@if (Model.Papeis != null && Model.Papeis.Any())
-{
-    <h4>Filmes em que participou:</h4>
-
-    <div id="atorPapeisCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            @for (int i = 0; i < Model.Papeis.Count; i++)
+            @if (Model.DataObito.HasValue)
             {
-                var filme = Model.Papeis[i];
-                <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <div class="card" style="width: 200px; margin:auto;">
-                        @* Optional Poster
-                        @* <img src="@filme.PosterUrl" class="card-img-top" alt="@filme.FilmeTitulo" /> *@
-                        <div class="card-body text-center">
-                            <h5 class="card-title">@filme.FilmeTitulo (@filme.DataLancamento.Year)</h5>
-                            <p class="card-text"><small>Personagem: @filme.Personagem</small></p>
-                            <a asp-controller="Filme" asp-action="Details" asp-route-id="@filme.FilmeId" class="btn btn-primary btn-sm">
-                                Ver Filme
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <dt class="col-sm-3">
+                    <i class="fas fa-cross"></i> Data de Óbito
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.DataObito.Value.ToString("yyyy")
+                </dd>
             }
-        </div>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#atorPapeisCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Anterior</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#atorPapeisCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Próximo</span>
-        </button>
+            <dt class="col-sm-3">
+                <i class="fas fa-align-left"></i> Biografia
+            </dt>
+            <dd class="col-sm-9">
+                @(string.IsNullOrWhiteSpace(Model.Biografia)
+                                ? "Não disponível"
+                                : Model.Biografia)
+            </dd>
+
+            <dt class="col-sm-3">
+                <i class="fas fa-film"></i> Filmes
+            </dt>
+            <dd class="col-sm-9">
+                @if (Model.Papeis != null && Model.Papeis.Any())
+                {
+                    <div id="atorPapeisCarousel"
+                         class="carousel slide"
+                         data-bs-ride="carousel">
+
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < Model.Papeis.Count; i++)
+                            {
+                                var filme = Model.Papeis[i];
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <div class="card bg-dark border-secondary"
+                                         style="width: 220px; margin:auto;">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-warning">
+                                                @filme.FilmeTitulo
+                                            </h5>
+
+                                            <p class="mb-1">
+                                                <small>
+                                                    @filme.DataLancamento.Year
+                                                </small>
+
+                                            </p>
+
+                                            <p class="card-text">
+                                                <small>
+                                                    Personagem: @filme.Personagem
+                                                </small>
+                                            </p>
+
+                                            <a asp-controller="Filme"
+                                               asp-action="Details"
+                                               asp-route-id="@filme.FilmeId"
+                                               class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-eye"></i> Ver Filme
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                }
+                        </div>
+
+                        <button class="carousel-control-prev"
+                                type="button"
+                                data-bs-target="#atorPapeisCarousel"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+
+                        <button class="carousel-control-next"
+                                type="button"
+                                data-bs-target="#atorPapeisCarousel"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                            <span class="visually-hidden">Próximo</span>
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        Este ator ainda não participou de nenhum filme.
+                    </span>
+                }
+            </dd>
+        </dl>
     </div>
-}
-else
-{
-    <p class="text-muted text-center"><em>Este ator ainda não participou de nenhum filme.</em></p>
-}
+
+<div class="mt-4">
+    @if (role == "Curador")
+    {
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-primary">
+            <i class="fas fa-edit"></i> Editar
+        </a>
+    }
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Voltar à lista
+    </a>
 </div>

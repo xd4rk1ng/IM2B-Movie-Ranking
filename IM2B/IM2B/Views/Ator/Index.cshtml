@@ -1,51 +1,96 @@
 ﻿@model IEnumerable<shared.Models.Ator>
+@using System.Security.Claims
 
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
     ViewData["Title"] = "Lista de Atores";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="hero-section">
+    <div class="container">
+        <h2 class="mb-3">
+            <i class="fas fa-user"></i>Lista de Atores
+        </h2>
+
+        @if (role == "Curador") 
+        {
+            <a class="btn btn-imdb" asp-action="Create">
+                <i class="fas fa-plus-circle"></i>Registar Novo Ator
+            </a>
+        }
+        
+    </div>
+</div>
 
 <!-- Search Form -->
-<form asp-action="Index" method="get" class="mb-3 d-flex">
-    <input type="text" name="search" class="form-control me-2"
-           placeholder="Procurar por nome..." value="@ViewData["CurrentSearch"]" />
-    <button type="submit" class="btn btn-primary">Buscar</button>
+<form asp-action="Index" method="get" class="container my-3 d-flex">
+    <input type="text"
+           name="search"
+           class="form-control me-2"
+           placeholder="Procurar por nome..."
+           value="@ViewData["CurrentSearch"]" />
+    <button type="submit" class="btn btn-outline-warning">
+        <i class="fas fa-search"></i> Buscar
+    </button>
 </form>
-
-<a class="btn btn-success mb-3" asp-action="Create">Registar Ator</a>
 
 @if (!Model.Any())
 {
-    <p>Nenhum ator encontrado.</p>
+    <div class="alert alert-info text-center" role="alert">
+        <i class="fas fa-info-circle"></i> Nenhum ator encontrado.
+    </div>
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Data de Nascimento</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var ator in Model)
-            {
+    <div class="table-responsive">
+        <table class="table table-dark table-striped table-hover">
+            <thead>
                 <tr>
-                    <td>@ator.Nome</td>
-                    <td>@ator.DataNasc.ToString("dd/MM/yyyy")</td>
-                    <td class="d-flex gap-2">
-                        <!-- Styled action buttons -->
-                        <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@ator.Id">Detalhes</a>
-                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@ator.Id">Editar</a>
-
-                        <form asp-action="Delete" asp-route-id="@ator.Id" method="post" onsubmit="return confirm('Tem certeza que deseja deletar este ator?');">
-                            <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
-                        </form>
-                    </td>
+                    <th><i class="fas fa-user"></i> Nome</th>
+                    <th><i class="fas fa-calendar"></i> Data de Nascimento</th>
+                    <th class="text-center"><i class="fas fa-cog"></i> Ações</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var ator in Model)
+                {
+                    <tr>
+                        <td class="movie-title">@ator.Nome</td>
+                        <td>@ator.DataNasc.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center">
+                            <a asp-action="Details"
+                               asp-route-id="@ator.Id"
+                               class="btn btn-sm btn-outline-warning me-1"
+                               title="Ver Detalhes">
+                                <i class="fas fa-eye"></i> Detalhes
+                            </a>
+                            
+                            @if (role == "Curador") {
+                                <a asp-action="Edit"
+                                asp-route-id="@ator.Id"
+                                class="btn btn-sm btn-outline-primary me-1"
+                                title="Editar">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+
+                                <form asp-action="Delete"
+                                    asp-route-id="@ator.Id"
+                                    method="post"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Tem certeza que deseja apagar este ator?');">
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                            title="Apagar">
+                                        <i class="fas fa-trash"></i> Apagar
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }

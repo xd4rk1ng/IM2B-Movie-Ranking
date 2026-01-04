@@ -15,7 +15,7 @@ namespace context.Mappings
                 entity.Sinopse,
                 entity.DataLancamento,
                 entity.Duracao,
-                entity.Atores.Select(e => e.ToModel()).ToList(),
+                entity.Atores?.Select(e => e.ToModel()).ToList() ?? new List<Ator>(),
                 entity.Avaliacao
             );
         }

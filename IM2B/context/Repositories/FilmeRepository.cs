@@ -16,6 +16,7 @@ namespace context.Repositories
 
         public async Task<Filme?> GetByIdAsync(int id) =>
             await _context.Filmes
+                .AsNoTracking()
                 .Where(f => f.Id == id)
                 .Select(f => f.ToModel())
                 .FirstOrDefaultAsync();
