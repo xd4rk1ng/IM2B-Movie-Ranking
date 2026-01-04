@@ -25,10 +25,12 @@ namespace context.Repositories
                 .Select(e => e.ToModel())
                 .ToListAsync();
 
-        public async Task AddAsync(Filme filme)
+        public async Task<int> AddAsync(Filme filme)
         {
-            _context.Filmes.Add(filme.ToEntity());
+            var filmeEntity = filme.ToEntity();
+            _context.Filmes.Add(filmeEntity);
             await _context.SaveChangesAsync();
+            return filmeEntity.Id;
         }
 
         public async Task UpdateAsync(Filme filme)

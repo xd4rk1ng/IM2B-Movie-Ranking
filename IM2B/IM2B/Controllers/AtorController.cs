@@ -35,25 +35,32 @@ namespace IM2B.Controllers
 
         // Create GET - Formulário para criar novo ator
         [Authorize(Roles = "Curador")]
-        [HttpGet]
+        [HttpGet("Ator/Create/")]
         public IActionResult Create()
         {
-            return View();
+            var vm = new FormAtorViewModel();
+            return View(vm);
         }
 
         // Create POST - Processar criação do ator
         [Authorize(Roles = "Curador")]
-        [HttpPost]
+        [HttpPost("Ator/Create/")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Ator ator)
+        public async Task<IActionResult> Create(FormAtorViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                // TODO: _context.Atores.Add(ator);
-                // TODO: _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                var ator = new Ator
+                {
+                    Nome = vm.Nome,
+                    DataNasc = vm.DataNasc,
+                    DataObito = vm.DataObito,
+                    Biografia = vm.Biografia
+                };
+                int atorId = await _atorRepo.AddAsync(ator);
+                return RedirectToAction(nameof(Details), new { id = atorId });
             }
-            return View(ator);
+            return View(vm);
         }
 
         // Edit GET - Formulário para editar ator

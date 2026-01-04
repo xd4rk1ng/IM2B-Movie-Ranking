@@ -2,6 +2,7 @@
 using shared.Models;
 using shared.Interfaces;
 using context.Mappings;
+using context.Entities;
 
 namespace context.Repositories
 {
@@ -23,13 +24,16 @@ namespace context.Repositories
 
         public async Task<List<Ator>> GetAllAsync() =>
             await _context.Atores
+                .AsNoTracking()
                 .Select(a => a.ToModel())
                 .ToListAsync();
 
-        public async Task AddAsync(Ator ator)
+        public async Task<int> AddAsync(Ator ator)
         {
-            _context.Atores.Add(ator.ToEntity());
+            var atorEntity = ator.ToEntity();
+            _context.Atores.Add(atorEntity);
             await _context.SaveChangesAsync();
+            return atorEntity.Id;
         }
 
         public async Task UpdateAsync(Ator ator)
