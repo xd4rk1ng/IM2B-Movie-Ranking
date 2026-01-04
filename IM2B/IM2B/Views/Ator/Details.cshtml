@@ -1,6 +1,9 @@
 ﻿@model IM2B.ViewModels.Ator.DetailsAtorViewModel
 
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
     ViewData["Title"] = "Detalhes do Ator";
 }
 
@@ -32,7 +35,10 @@
         }
 
         <a asp-action="Index" class="btn btn-secondary mt-3">Voltar</a>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mt-3">Editar</a>
+        @if (role == "Curador")
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mt-3">Editar</a>
+        }
     </div>
 
 @if (Model.Papeis != null && Model.Papeis.Any())

@@ -1,6 +1,9 @@
 ﻿@model shared.Models.Filme
 
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
     ViewData["Title"] = "Detalhes do Filme";
 }
 

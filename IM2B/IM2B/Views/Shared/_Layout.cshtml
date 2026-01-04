@@ -77,11 +77,11 @@
                         <div class="navbar-nav">
                             @if (role == "Utilizador")
                             {
-                                <p class="nav-link">Welcome, @nome</p>
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">@nome</a>
                             }
                             else
                             {
-                                <p class="nav-link">Welcome, Administrator.</p>
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">Administrator</a>
                             }
                         </div>
                         <div class="navbar-nav">

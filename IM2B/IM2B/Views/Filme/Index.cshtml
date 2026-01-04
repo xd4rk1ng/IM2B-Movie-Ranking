@@ -1,18 +1,9 @@
 ﻿@model IEnumerable<shared.Models.Filme>
 @using System.Security.Claims
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<context.Entities.User> UserManager
 
 @{
     string role = User.IsInRole("Curador") ? "Curador" :
                   User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
-
-    // Gets the user from the user manager and then searches for the full name
-    var appUser = await UserManager.GetUserAsync(User);
-    string nome = appUser?.NomeCompleto
-                  ?? User.FindFirstValue(ClaimTypes.Name)
-                  ?? User.Identity?.Name
-                  ?? "Visitante";
 
     ViewData["Title"] = "Lista de Filmes";
 }

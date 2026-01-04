@@ -40,7 +40,7 @@ namespace IM2B.Controllers
             {
                 var user = new User
                 {
-                    UserName = model.Email,
+                    UserName = model.UserName,
                     Email = model.Email,
                     NomeCompleto = model.NomeCompleto,
                     IsCurador = model.IsCurador
@@ -133,7 +133,14 @@ namespace IM2B.Controllers
         // GET: /Account/Lockout
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Lockout()
+        public IActionResult Lockout() // What is this used for?
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Curador, Utilizador")]
+        public IActionResult Index() // Does not need to receive any parameters as the user gotten from the user manager
         {
             return View();
         }

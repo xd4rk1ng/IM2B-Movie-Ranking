@@ -1,5 +1,46 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<context.Entities.User> UserManager
+
 @{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
+    // Gets the user from the user manager and then searches for the full name
+    var appUser = await UserManager.GetUserAsync(User);
+
+    string id = appUser?.Id
+                ?? User.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? "ID não disponível";
+
+    string nome = appUser?.NomeCompleto
+                  ?? User.FindFirstValue(ClaimTypes.Name)
+                  ?? User.Identity?.Name
+                  ?? "Visitante";
+
+    string userName = appUser?.UserName
+                      ?? User.FindFirstValue(ClaimTypes.NameIdentifier)
+                      ?? "Username não disponível";
+
+    string email = appUser?.Email 
+                   ?? User.FindFirstValue(ClaimTypes.Email)
+                   ?? "Email não disponível";
+
+    string password = appUser?.PasswordHash
+                      ?? "Senha não disponível";
+
+    ViewData["Title"] = "Gestão de usuario - " + nome;
 }
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h3 class="card-title>">Informações do Usuário</h3>
+        <p><strong>Username:</strong> @userName</p>
+        <p><strong>Nome Completo:</strong> @nome</p>
+        <p><strong>Email:</strong> @appUser?.Email</p>
+        <p><strong>Função:</strong> @role</p>
+        <p><strong>Password:</strong> @password</p>
+    </div>
+</div>
