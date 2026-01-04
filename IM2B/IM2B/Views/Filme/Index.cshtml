@@ -5,8 +5,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Year</th>
+            <th>Título</th>
+            <th>Ano de lançamento</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -15,7 +16,14 @@
             <tr>
                 <td>@filme.Titulo</td>
                 <td>@filme.DataLancamento</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@filme.Id">Detalhes</a> |
+                    <a asp-action="Edit" asp-route-id="@filme.Id">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@filme.Id">Apagar</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+
