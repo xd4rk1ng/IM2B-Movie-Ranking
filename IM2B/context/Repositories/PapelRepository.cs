@@ -20,6 +20,13 @@ namespace context.Repositories
                 .Select(p => p.ToModel())
                 .FirstOrDefaultAsync();
 
+        public async Task<List<Papel>> GetByNameAsync(string name) =>
+            await _context.Papeis
+                .AsNoTracking()
+                .Where(a => a.Personagem == name)
+                .Select(a => a.ToModel())
+                .ToListAsync();
+
         public async Task<List<Papel>> GetAllAsync() =>
             await _context.Papeis
                 .Select(e => e.ToModel())

@@ -1,26 +1,49 @@
-﻿@model shared.Models.Ator
+﻿@model IM2B.ViewModels.Ator.DetailsAtorViewModel
 
-<h2>Detalhes do Ator</h2>
+@{
+    ViewData["Title"] = "Detalhes do Ator";
+}
 
-<div class="card">
+<h2>@ViewData["Title"]</h2>
+
+<div class="card mb-3">
     <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">Nome</dt>
-            <dd class="col-sm-9">@Model.Nome</dd>
+        <h3 class="card-title">@Model.Nome</h3>
 
-            <dt class="col-sm-3">Data de Nascimento</dt>
-            <dd class="col-sm-9">
-                @Model.DataNasc.ToString("dd/MM/yyyy")
-            </dd>
-        </dl>
+        <p>
+            <strong>Data de Nascimento:</strong>
+            @Model.DataNasc.ToString("dd/MM/yyyy")
+        </p>
+
+        @if (Model.DataObito.HasValue)
+        {
+            <p>
+                <strong>Data de Óbito:</strong>
+                @Model.DataObito.Value.ToString("dd/MM/yyyy")
+            </p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.Biografia))
+        {
+            <p>
+                <strong>Biografia:</strong><br />
+                @Model.Biografia
+            </p>
+        }
+
+        @* Optional: display related movies *@
+@*         @if (Model.Filmes != null && Model.Filmes.Any())
+        {
+            <p><strong>Filmes:</strong></p>
+            <ul>
+                @foreach (var filme in Model.Filmes)
+                {
+                    <li>@filme.Titulo (@filme.Ano)</li>
+                }
+            </ul>
+        } *@
+
+        <a asp-action="Index" class="btn btn-secondary mt-3">Voltar</a>
+        <a asp-action="Edit" asp-route-id="@Model.Nome" class="btn btn-warning mt-3">Editar</a>
     </div>
-</div>
-
-<div class="mt-3">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
-        Editar
-    </a>
-    <a asp-action="Index" class="btn btn-secondary">
-        Voltar à lista
-    </a>
 </div>
