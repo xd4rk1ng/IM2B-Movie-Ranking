@@ -1,4 +1,4 @@
-﻿@model shared.Models.Filme
+﻿@model IM2B.ViewModels.Filme.FormFilmeViewModel
 
 @{
     ViewData["Title"] = "Criar Filme";
@@ -15,6 +15,9 @@
     <div class="card-body">
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            @* Hidden Id (needed if you reuse the view for Edit) *@
+            <input type="hidden" asp-for="Id" />
 
             <div class="form-group mb-3">
                 <label asp-for="Titulo" class="form-label">
@@ -38,7 +41,8 @@
                         <label asp-for="DataLancamento" class="form-label">
                             <i class="fas fa-calendar-alt"></i> Data de Lançamento
                         </label>
-                        <input asp-for="DataLancamento" class="form-control bg-dark text-light border-secondary" type="date" />
+                        <input asp-for="DataLancamento" class="form-control bg-dark text-light border-secondary" type="date"
+                               value="@(Model.DataLancamento.ToString("yyyy-MM-dd"))" />
                         <span asp-validation-for="DataLancamento" class="text-danger"></span>
                     </div>
                 </div>
@@ -48,7 +52,8 @@
                         <label asp-for="Duracao" class="form-label">
                             <i class="fas fa-clock"></i> Duração (HH:MM:SS)
                         </label>
-                        <input asp-for="Duracao" class="form-control bg-dark text-light border-secondary" type="time" placeholder="01:30:00" />
+                        <input asp-for="Duracao" class="form-control bg-dark text-light border-secondary" type="time" step="1"
+                               value="@(Model.Duracao.ToString(@"hh\:mm\:ss"))" />
                         <span asp-validation-for="Duracao" class="text-danger"></span>
                         <small class="form-text text-muted">Formato: Horas:Minutos:Segundos</small>
                     </div>
@@ -62,7 +67,7 @@
                 <select asp-for="Avaliacao" class="form-select bg-dark text-light border-secondary">
                     <option value="1">⭐ 1 - Fraco</option>
                     <option value="2">⭐⭐ 2 - Regular</option>
-                    <option value="3" selected>⭐⭐⭐ 3 - Bom</option>
+                    <option value="3">⭐⭐⭐ 3 - Bom</option>
                     <option value="4">⭐⭐⭐⭐ 4 - Muito Bom</option>
                     <option value="5">⭐⭐⭐⭐⭐ 5 - Excelente</option>
                 </select>
@@ -86,4 +91,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-

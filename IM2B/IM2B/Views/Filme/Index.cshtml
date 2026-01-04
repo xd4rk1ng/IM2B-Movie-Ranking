@@ -11,12 +11,9 @@
 <div class="hero-section">
     <div class="container">
         <h2 class="mb-3"><i class="fas fa-film"></i> Lista de Filmes</h2>
-        @if (role == "Curador")
-        {
-            <a class="btn btn-imdb" asp-action="Create">
-                <i class="fas fa-plus-circle"></i> Adicionar Novo Filme
-            </a>
-        }
+        <a class="btn btn-imdb" asp-action="Create">
+            <i class="fas fa-plus-circle"></i> Adicionar Novo Filme
+        </a>
     </div>
 </div>
 
@@ -61,16 +58,15 @@ else
                             <a asp-action="Details" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-warning me-1" title="Ver Detalhes">
                                 <i class="fas fa-eye"></i> Detalhes
                             </a>
-                            @if (role == "Curador")
-                            {
-                                ﻿<a asp-action="Edit" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-primary me-1" title="Editar">
+
+                            @if (role == "Curador") {
+                                <a asp-action="Edit" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-primary me-1" title="Editar">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
                                 <a asp-action="Delete" asp-route-id="@filme.Id" class="btn btn-sm btn-outline-danger" title="Apagar">
                                     <i class="fas fa-trash"></i> Apagar
                                 </a>
                             }
-                            
                         </td>
                     </tr>
                 }
