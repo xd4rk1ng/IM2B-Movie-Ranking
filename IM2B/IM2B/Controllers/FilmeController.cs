@@ -25,14 +25,23 @@ namespace IM2B.Controllers
         }
 
         // Details - Ver detalhes de um filme específico
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
-            // if (filme == null) return NotFound();
+            var filme = await _filmeRepo.GetByIdAsync(id);
+            if (filme == null) return NotFound();
 
-            //var filme = new Filme(); // Placeholder
-            return View(/*filme*/);
+            return View(filme);
         }
+
+
+        //public IActionResult Details(int id)
+        //{
+        // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
+        // if (filme == null) return NotFound();
+
+        //var filme = new Filme(); // Placeholder
+        //    return View(/*filme*/);
+        //}
 
         // Create GET - Formulário para criar novo filme
         [Authorize(Roles = "Curador")]
