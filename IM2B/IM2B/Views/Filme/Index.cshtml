@@ -21,6 +21,18 @@
     </div>
 </div>
 
+<!-- Search Form -->
+<form asp-action="Index" method="get" class="container my-3 d-flex">
+    <input type="text"
+           name="search"
+           class="form-control me-2"
+           placeholder="Procurar por nome..."
+           value="@ViewData["CurrentSearch"]" />
+    <button type="submit" class="btn btn-outline-warning">
+        <i class="fas fa-search"></i> Buscar
+    </button>
+</form>
+
 @if (!Model.Any())
 {
     <div class="alert alert-info text-center" role="alert">

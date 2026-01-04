@@ -5,6 +5,7 @@ using IM2B.ViewModels;
 using shared.Interfaces;
 using IM2B.ViewModels.Filme;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 
 namespace IM2B.Controllers
 {
@@ -21,10 +22,12 @@ namespace IM2B.Controllers
         }
 
         // Index - Listar todos os filmes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
             var filmes = await _filmeRepo.GetAllAsync();
-            //var filmes = new List<Filme>(); // Placeholder
+            if (!string.IsNullOrWhiteSpace(search))
+                filmes = filmes.Where(a => a.Titulo.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            ViewData["CurrentSearch"] = search ?? "";
             return View(filmes);
         }
 
@@ -113,35 +116,44 @@ namespace IM2B.Controllers
             var filme = await _filmeRepo.GetByIdAsync(id);
             if (filme == null) return NotFound();
 
-            return View(filme);
-        }
-        //public IActionResult Edit(int id)
-        //{
-            // TODO: var filme = _context.Filmes.Find(id);
-            // if (filme == null) return NotFound();
+            var vm = new FormFilmeViewModel()
+            {
+                Id = filme.Id,
+                Titulo = filme.Titulo,
+                Avaliacao = filme.Avaliacao,
+                DataLancamento = filme.DataLancamento,
+                Duracao = filme.Duracao,
+                Sinopse = filme.Sinopse,
+            };
 
-            //var filme = new Filme(); // Placeholder
-        //    return View(/*filme*/);
-        //}
+            return View(vm);
+        }
 
         // Edit POST - Processar edição do filme
         [Authorize(Roles = "Curador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Filme filme)
+        public async Task<IActionResult> Edit(int id, FormFilmeViewModel vm)
         {
-            if (id != filme.Id)
-            {
+            if (id != vm.Id)
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                // TODO: _context.Update(filme);
-                // TODO: _context.SaveChanges();
+                var filme = await _filmeRepo.GetByIdAsync(id);
+                if (filme == null) 
+                    return NotFound();
+
+                filme.Titulo = vm.Titulo;
+                filme.Sinopse = vm.Sinopse;
+                filme.DataLancamento = vm.DataLancamento;
+                filme.Duracao = vm.Duracao;
+                filme.Avaliacao = vm.Avaliacao;
+
+                await _filmeRepo.UpdateAsync(filme);
                 return RedirectToAction(nameof(Index));
             }
-            return View(filme);
+            return View(vm);
         }
 
         // Delete GET - Confirmar exclusão

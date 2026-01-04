@@ -75,6 +75,16 @@
                     else
                     {
                         <div class="navbar-nav">
+                            @if (role == "Utilizador")
+                            {
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">@nome</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">Administrator</a>
+                            }
+                        </div>
+                        <div class="navbar-nav">
                             <div class="nav-item d-flex flex-column align-items-center">
                                 <!-- Username and icon -->
                                 <a class="nav-link d-flex align-items-center pb-0" asp-controller="Account" asp-action="Index">
