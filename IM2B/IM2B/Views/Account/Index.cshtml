@@ -26,9 +26,6 @@
                    ?? User.FindFirstValue(ClaimTypes.Email)
                    ?? "Email não disponível";
 
-    string password = appUser?.PasswordHash
-                      ?? "Senha não disponível";
-
     ViewData["Title"] = "Gestão de usuario - " + nome;
 }
 
@@ -41,6 +38,5 @@
         <p><strong>Nome Completo:</strong> @nome</p>
         <p><strong>Email:</strong> @appUser?.Email</p>
         <p><strong>Função:</strong> @role</p>
-        <p><strong>Password:</strong> @password</p>
     </div>
 </div>

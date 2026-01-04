@@ -10,17 +10,21 @@
 
 <div class="hero-section">
     <div class="container">
-        <h2 class="mb-3"><i class="fas fa-film"></i> Lista de Filmes</h2>
-        <a class="btn btn-imdb" asp-action="Create">
-            <i class="fas fa-plus-circle"></i> Adicionar Novo Filme
-        </a>
+        <h2 class="mb-3"><i class="fas fa-film"></i>Lista de Filmes</h2>
+
+        @if (role == "Curador") // text is outside the html tags due to formatting
+        {
+            <a class="btn btn-imdb" asp-action="Create">
+                <i class="fas fa-plus-circle"></i>Adicionar Novo Filme 
+            </a>
+        }
     </div>
 </div>
 
 @if (!Model.Any())
 {
     <div class="alert alert-info text-center" role="alert">
-        <i class="fas fa-info-circle"></i> Nenhum filme encontrado.
+        <i class="fas fa-info-circle"></i>Nenhum filme encontrado.
     </div>
 }
 else
