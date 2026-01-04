@@ -25,14 +25,23 @@ namespace IM2B.Controllers
         }
 
         // Details - Ver detalhes de um filme específico
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
-            // if (filme == null) return NotFound();
+            var filme = await _filmeRepo.GetByIdAsync(id);
+            if (filme == null) return NotFound();
 
-            //var filme = new Filme(); // Placeholder
-            return View(/*filme*/);
+            return View(filme);
         }
+
+
+        //public IActionResult Details(int id)
+        //{
+        // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
+        // if (filme == null) return NotFound();
+
+        //var filme = new Filme(); // Placeholder
+        //    return View(/*filme*/);
+        //}
 
         // Create GET - Formulário para criar novo filme
         [Authorize(Roles = "Curador")]
@@ -60,14 +69,21 @@ namespace IM2B.Controllers
         // Edit GET - Formulário para editar filme
         [Authorize(Roles = "Curador")]
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            var filme = await _filmeRepo.GetByIdAsync(id);
+            if (filme == null) return NotFound();
+
+            return View(filme);
+        }
+        //public IActionResult Edit(int id)
+        //{
             // TODO: var filme = _context.Filmes.Find(id);
             // if (filme == null) return NotFound();
 
             //var filme = new Filme(); // Placeholder
-            return View(/*filme*/);
-        }
+        //    return View(/*filme*/);
+        //}
 
         // Edit POST - Processar edição do filme
         [Authorize(Roles = "Curador")]
@@ -92,14 +108,21 @@ namespace IM2B.Controllers
         // Delete GET - Confirmar exclusão
         [Authorize(Roles = "Curador")]
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            // TODO: var filme = _context.Filmes.Find(id);
-            // if (filme == null) return NotFound();
+            var filme = await _filmeRepo.GetByIdAsync(id);
+            if (filme == null) return NotFound();
 
-            //var filme = new Filme(); // Placeholder
-            return View(/*filme*/);
+            return View(filme);
         }
+        // public IActionResult Delete(int id)
+        // {
+        // TODO: var filme = _context.Filmes.Find(id);
+        // if (filme == null) return NotFound();
+
+        //var filme = new Filme(); // Placeholder
+        //     return View(/*filme*/);
+        // }
 
         // Delete POST - Processar exclusão
         [Authorize(Roles = "Curador")]

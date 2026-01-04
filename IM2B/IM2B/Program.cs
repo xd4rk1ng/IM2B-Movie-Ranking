@@ -25,9 +25,9 @@ static string ConnectionSelector()
             case "1":
                 return "ContainerConnection";
             case "2":
-                return "TalitaConnection";
-            case "3":
                 return "SergioConnection";
+            case "3":
+                return "TalitaConnection";
             default:
                 Console.WriteLine("\nInvalid option. Press any key...");
                 Console.ReadKey();
