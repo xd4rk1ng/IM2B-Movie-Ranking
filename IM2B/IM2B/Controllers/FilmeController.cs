@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using shared.Models;
 using IM2B.ViewModels;
 using shared.Interfaces;
+using IM2B.ViewModels.Filme;
+using System.Threading.Tasks;
 
 namespace IM2B.Controllers
 {
@@ -10,10 +12,12 @@ namespace IM2B.Controllers
     {
         // TODO: Adicionar DbContext quando configurar o banco de dados
         private readonly IGenericRepository<Filme> _filmeRepo;
+        private readonly IPapelRepository<Papel> _papelRepo;
 
-        public FilmeController(IGenericRepository<Filme> filmeRepo)
+        public FilmeController(IGenericRepository<Filme> filmeRepo, IPapelRepository<Papel> papelRepo)
         {
             _filmeRepo = filmeRepo;
+            _papelRepo = papelRepo;
         }
 
         // Index - Listar todos os filmes
@@ -25,49 +29,100 @@ namespace IM2B.Controllers
         }
 
         // Details - Ver detalhes de um filme específico
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
-            // if (filme == null) return NotFound();
+            // Get the filme entity
+            var filme = await _filmeRepo.GetByIdAsync(id);
+            if (filme == null) return NotFound();
 
-            //var filme = new Filme(); // Placeholder
-            return View(/*filme*/);
+            // Get all roles (papeis) for this filme, including actor info
+            var papeis = await _papelRepo.GetAllForFilmeIdAsync(id);
+
+            // Map papeis into AtorViewModel for the filme view model
+            var atoresVm = papeis.Select(p => new IM2B.ViewModels.Filme.AtorViewModel
+            {
+                Id = p.AtorId,
+                Nome = p.Ator.Nome,
+                Personagem = p.Personagem,
+                Principal = p.Principal,
+                DataNasc = p.Ator.DataNasc,
+                DataObito = p.Ator?.DataObito
+            }).ToList();
+
+            // Build the DetailsFilmeViewModel
+            var vm = new DetailsFilmeViewModel
+            {
+                Id = filme.Id,
+                Titulo = filme.Titulo,
+                Sinopse = filme.Sinopse,
+                DataLancamento = filme.DataLancamento,
+                Duracao = filme.Duracao,
+                Avaliacao = filme.Avaliacao,
+                Atores = atoresVm
+            };
+
+            return View(vm);
         }
+
+
+        //public IActionResult Details(int id)
+        //{
+        // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
+        // if (filme == null) return NotFound();
+
+        //var filme = new Filme(); // Placeholder
+        //    return View(/*filme*/);
+        //}
 
         // Create GET - Formulário para criar novo filme
         [Authorize(Roles = "Curador")]
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var vm = new FormFilmeViewModel();
+            return View(vm);
         }
 
         // Create POST - Processar criação do filme
         [Authorize(Roles = "Curador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Filme filme)
+        public async Task<IActionResult> Create(FormFilmeViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                // TODO: _context.Filmes.Add(filme);
-                // TODO: _context.SaveChanges();
+                var filme = new Filme
+                {
+                    Titulo = vm.Titulo,
+                    Sinopse = vm.Sinopse,
+                    DataLancamento = vm.DataLancamento,
+                    Duracao = vm.Duracao,
+                    Avaliacao = vm.Avaliacao,
+                };
+                int filmeId = await _filmeRepo.AddAsync(filme);
                 return RedirectToAction(nameof(Index));
             }
-            return View(filme);
+            return View(vm);
         }
 
         // Edit GET - Formulário para editar filme
         [Authorize(Roles = "Curador")]
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            var filme = await _filmeRepo.GetByIdAsync(id);
+            if (filme == null) return NotFound();
+
+            return View(filme);
+        }
+        //public IActionResult Edit(int id)
+        //{
             // TODO: var filme = _context.Filmes.Find(id);
             // if (filme == null) return NotFound();
 
             //var filme = new Filme(); // Placeholder
-            return View(/*filme*/);
-        }
+        //    return View(/*filme*/);
+        //}
 
         // Edit POST - Processar edição do filme
         [Authorize(Roles = "Curador")]
@@ -92,26 +147,38 @@ namespace IM2B.Controllers
         // Delete GET - Confirmar exclusão
         [Authorize(Roles = "Curador")]
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            // TODO: var filme = _context.Filmes.Find(id);
-            // if (filme == null) return NotFound();
+            var filme = await _filmeRepo.GetByIdAsync(id);
+            if (filme == null) return NotFound();
 
-            //var filme = new Filme(); // Placeholder
-            return View(/*filme*/);
+            return View(filme);
         }
+        // public IActionResult Delete(int id)
+        // {
+        // TODO: var filme = _context.Filmes.Find(id);
+        // if (filme == null) return NotFound();
+
+        //var filme = new Filme(); // Placeholder
+        //     return View(/*filme*/);
+        // }
 
         // Delete POST - Processar exclusão
         [Authorize(Roles = "Curador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // TODO: var filme = _context.Filmes.Find(id);
-            // TODO: _context.Filmes.Remove(filme);
-            // TODO: _context.SaveChanges();
+            await _filmeRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        //public IActionResult DeleteConfirmed(int id)
+        //{
+        // TODO: var filme = _context.Filmes.Find(id);
+        // TODO: _context.Filmes.Remove(filme);
+        // TODO: _context.SaveChanges();
+        // return RedirectToAction(nameof(Index));
+        //}
 
         // AtribuirPapel GET - Formulário para atribuir ator a filme
         [Authorize(Roles = "Curador")]

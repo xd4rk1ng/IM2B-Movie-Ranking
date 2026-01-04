@@ -27,7 +27,7 @@ namespace context.Seeders
             {
                 var newCurador = new User
                 {
-                    UserName = curadorEmail,
+                    UserName = "Curador",
                     Email = curadorEmail,
                     NomeCompleto = "Curador do Sistema",
                     EmailConfirmed = true

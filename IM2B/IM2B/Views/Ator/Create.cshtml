@@ -1,23 +1,20 @@
 ﻿@model IM2B.ViewModels.Ator.FormAtorViewModel
 
 @{
-    ViewData["Title"] = "Editar Ator";
+    ViewData["Title"] = "Criar Ator";
 }
 
 <div class="hero-section">
     <div class="container">
-        <h2 class="mb-3"><i class="fas fa-user-edit"></i> Editar Ator</h2>
-        <p class="text-muted">Apenas curadores podem editar atores</p>
+        <h2 class="mb-3"><i class="fas fa-user-plus"></i> Adicionar Novo Ator</h2>
+        <p class="text-muted">Apenas curadores podem adicionar atores ao catálogo</p>
     </div>
 </div>
 
 <div class="card bg-dark text-light border-warning">
     <div class="card-body">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-
-            @* Hidden Id *@
-            <input type="hidden" asp-for="Id" />
 
             <div class="form-group mb-3">
                 <label asp-for="Nome" class="form-label">
@@ -25,7 +22,7 @@
                 </label>
                 <input asp-for="Nome"
                        class="form-control bg-dark text-light border-secondary"
-                       placeholder="Nome do ator" />
+                       placeholder="Digite o nome do ator" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
 
@@ -37,8 +34,7 @@
                         </label>
                         <input asp-for="DataNasc"
                                type="date"
-                               class="form-control bg-dark text-light border-secondary"
-                               value="@Model.DataNasc.ToString("yyyy-MM-dd")" />
+                               class="form-control bg-dark text-light border-secondary" />
                         <span asp-validation-for="DataNasc" class="text-danger"></span>
                     </div>
                 </div>
@@ -50,8 +46,7 @@
                         </label>
                         <input asp-for="DataObito"
                                type="date"
-                               class="form-control bg-dark text-light border-secondary"
-                               value="@(Model.DataObito.HasValue? Model.DataObito.Value.ToString("yyyy-MM-dd") : "")" />
+                               class="form-control bg-dark text-light border-secondary" />
                         <span asp-validation-for="DataObito" class="text-danger"></span>
                         <small class="text-muted">Opcional</small>
                     </div>
@@ -71,20 +66,15 @@
 
             <div class="alert alert-warning" role="alert">
                 <i class="fas fa-exclamation-triangle"></i>
-                <strong>Atenção!</strong> As alterações feitas ao ator serão guardadas permanentemente.
+                <strong>Atenção!</strong> Ao clicar em "Criar Ator", as informações serão adicionadas permanentemente.
             </div>
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-success">
-                    <i class="fas fa-check"></i> Salvar Alterações
+                    <i class="fas fa-save"></i> Criar Ator
                 </button>
-
-                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                <a asp-action="Index" class="btn btn-secondary">
                     <i class="fas fa-times"></i> Cancelar
-                </a>
-
-                <a asp-action="Index" class="btn btn-outline-light">
-                    <i class="fas fa-arrow-left"></i> Voltar à lista
                 </a>
             </div>
         </form>

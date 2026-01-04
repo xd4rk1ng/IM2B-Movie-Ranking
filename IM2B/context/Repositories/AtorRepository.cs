@@ -2,6 +2,7 @@
 using shared.Models;
 using shared.Interfaces;
 using context.Mappings;
+using context.Entities;
 
 namespace context.Repositories
 {
@@ -16,24 +17,37 @@ namespace context.Repositories
 
         public async Task<Ator?> GetByIdAsync(int id) =>
             await _context.Atores
+                .AsNoTracking()
                 .Where(a => a.Id == id)
                 .Select(a => a.ToModel())
                 .FirstOrDefaultAsync();
 
-        public async Task<List<Ator>> GetAllAsync() =>
+        public async Task<List<Ator>> GetByNameAsync(string name) =>
             await _context.Atores
+                .AsNoTracking()
+                .Where(a => a.Nome == name)
                 .Select(a => a.ToModel())
                 .ToListAsync();
 
-        public async Task AddAsync(Ator filme)
+        public async Task<List<Ator>> GetAllAsync() =>
+            await _context.Atores
+                .AsNoTracking()
+                .Select(a => a.ToModel())
+                .ToListAsync();
+
+        public async Task<int> AddAsync(Ator ator)
         {
-            _context.Atores.Add(filme.ToEntity());
+            var atorEntity = ator.ToEntity();
+            _context.Atores.Add(atorEntity);
             await _context.SaveChangesAsync();
+            return atorEntity.Id;
         }
 
-        public async Task UpdateAsync(Ator filme)
+        public async Task UpdateAsync(Ator ator)
         {
-            _context.Atores.Update(filme.ToEntity());
+            var atorEntity = ator.ToEntity();
+            _context.Attach(atorEntity);
+            _context.Entry(atorEntity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 

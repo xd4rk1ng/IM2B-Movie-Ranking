@@ -4,8 +4,9 @@
         where Model : class
     {
         Task<Model?> GetByIdAsync(int id);
+        Task<List<Model>> GetByNameAsync(string name);
         Task<List<Model>> GetAllAsync();
-        Task AddAsync(Model objectModel);
+        Task<int> AddAsync(Model objectModel);
         Task UpdateAsync(Model objectModel);
         Task DeleteAsync(int id);
     }

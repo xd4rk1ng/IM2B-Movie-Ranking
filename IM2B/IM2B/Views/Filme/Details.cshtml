@@ -1,0 +1,101 @@
+﻿@model IM2B.ViewModels.Filme.DetailsFilmeViewModel
+
+@{
+    string role = User.IsInRole("Curador") ? "Curador" :
+                  User.IsInRole("Utilizador") ? "Utilizador" : "Visitante";
+
+    ViewData["Title"] = "Detalhes do Filme";
+}
+
+<div class="hero-section">
+    <div class="container">
+        <h2 class="mb-3"><i class="fas fa-film"></i> Detalhes do Filme</h2>
+    </div>
+</div>
+
+<div class="card bg-dark text-light border-warning">
+    <div class="card-header bg-imdb">
+        <h3 class="mb-0">@Model.Titulo</h3>
+        <div class="rating mt-2">
+            @for (int i = 0; i < Model.Avaliacao && i < 5; i++)
+            {
+                <i class="fas fa-star"></i>
+            }
+            @for (int i = Model.Avaliacao; i < 5; i++)
+            {
+                <i class="far fa-star"></i>
+            }
+            <span class="ms-2">@Model.Avaliacao/5</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3"><i class="fas fa-heading"></i> Título</dt>
+            <dd class="col-sm-9">@Model.Titulo</dd>
+
+            <dt class="col-sm-3"><i class="fas fa-align-left"></i> Sinopse</dt>
+            <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Sinopse) ? Model.Sinopse : "Não disponível")</dd>
+
+            <dt class="col-sm-3"><i class="fas fa-calendar-alt"></i> Data de Lançamento</dt>
+            <dd class="col-sm-9">@Model.DataLancamento.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3"><i class="fas fa-clock"></i> Duração</dt>
+            <dd class="col-sm-9">@($"{Model.Duracao.Hours}h {Model.Duracao.Minutes}min")</dd>
+
+            <dt class="col-sm-3"><i class="fas fa-star"></i> Avaliação</dt>
+            <dd class="col-sm-9">
+                <span class="rating">
+                    @for (int i = 0; i < Model.Avaliacao && i < 5; i++)
+                    {
+                        <i class="fas fa-star"></i>
+                    }
+                    @for (int i = Model.Avaliacao; i < 5; i++)
+                    {
+                        <i class="far fa-star"></i>
+                    }
+                </span>
+                <span class="ms-2">(@Model.Avaliacao/5)</span>
+            </dd>
+
+            <dt class="col-sm-3"><i class="fas fa-users"></i> Atores</dt>
+            <dd class="col-sm-9">
+                @if (Model.Atores != null && Model.Atores.Any())
+                {
+                    <ul class="list-unstyled">
+                        @foreach (var ator in Model.Atores)
+                        {
+                            <li class="mb-2">
+                                <a asp-controller="Ator" asp-action="Details" asp-route-id="@ator.Id" class="text-warning text-decoration-none">
+                                    <i class="fas fa-user-circle"></i> @ator.Nome
+                                    @if (!string.IsNullOrWhiteSpace(ator.Personagem))
+                                    {
+                                        <small class="text-muted"> — @ator.Personagem</small>
+                                    }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <span class="text-muted">Nenhum ator associado</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-4">
+    @if (role == "Curador")
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Editar
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Apagar
+        </a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Voltar à lista
+    </a>
+</div>

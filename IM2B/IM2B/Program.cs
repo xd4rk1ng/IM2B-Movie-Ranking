@@ -7,19 +7,50 @@ using Microsoft.EntityFrameworkCore;
 using shared.Interfaces;
 using shared.Models;
 
+static string ConnectionSelector()
+{
+    while (true)
+    {
+        Console.WriteLine("##################################");
+        Console.WriteLine("Select database connection string:\n");
+        Console.WriteLine("1) Container DB");
+        Console.WriteLine("2) Sergio DB");
+        Console.WriteLine("3) Talita DB");
+        Console.WriteLine();
+        Console.Write("\nChoice: ");
+        string? input = Console.ReadLine();
+
+        switch (input)
+        {
+            case "1":
+                return "ContainerConnection";
+            case "2":
+                return "SergioConnection";
+            case "3":
+                return "TalitaConnection";
+            default:
+                Console.WriteLine("\nInvalid option. Press any key...");
+                Console.ReadKey();
+                break;
+        }
+    }
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+
 // Configurar Entity Framework e SQL Server
-string? connectionString = builder.Configuration.GetConnectionString("ContainerConnection");
+string? connectionString = builder.Configuration.GetConnectionString(ConnectionSelector());
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("context")));
 
 builder.Services.AddScoped<IGenericRepository<Filme>, FilmeRepository>();
 builder.Services.AddScoped<IGenericRepository<Ator>, AtorRepository>();
-builder.Services.AddScoped<IGenericRepository<Papel>, PapelRepository>();
+builder.Services.AddScoped<IPapelRepository<Papel>, PapelRepository>();
 
 // Configurar Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -104,15 +135,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
-{
-    var roles = new[] { "Curador", "Utilizador" };
-    foreach (var role in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(role))
-        {
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
-    }
-}

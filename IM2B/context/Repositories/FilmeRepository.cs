@@ -16,19 +16,29 @@ namespace context.Repositories
 
         public async Task<Filme?> GetByIdAsync(int id) =>
             await _context.Filmes
+                .AsNoTracking()
                 .Where(f => f.Id == id)
                 .Select(f => f.ToModel())
                 .FirstOrDefaultAsync();
+
+        public async Task<List<Filme>> GetByNameAsync(string name) =>
+            await _context.Filmes
+                .AsNoTracking()
+                .Where(a => a.Titulo == name)
+                .Select(a => a.ToModel())
+                .ToListAsync();
 
         public async Task<List<Filme>> GetAllAsync() =>
             await _context.Filmes
                 .Select(e => e.ToModel())
                 .ToListAsync();
 
-        public async Task AddAsync(Filme filme)
+        public async Task<int> AddAsync(Filme filme)
         {
-            _context.Filmes.Add(filme.ToEntity());
+            var filmeEntity = filme.ToEntity();
+            _context.Filmes.Add(filmeEntity);
             await _context.SaveChangesAsync();
+            return filmeEntity.Id;
         }
 
         public async Task UpdateAsync(Filme filme)
