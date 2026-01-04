@@ -7,7 +7,7 @@
         public DateOnly DataNasc { get; set; }
         public DateOnly? DataObito { get; set; }
         public string Biografia { get; set; }
-        public List<Filme> Filmes { get; set; }
+        public List<Filme> Filmes { get; set; } = new();
 
         // Construtor Vazio (NAO REMOVER)
         public Ator() { }

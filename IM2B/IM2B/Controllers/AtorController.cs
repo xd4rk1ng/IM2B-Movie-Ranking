@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using shared.Models;
 using shared.Interfaces;
 using System.Threading.Tasks;
+using IM2B.ViewModels.Ator;
 
 namespace IM2B.Controllers
 {
@@ -34,25 +35,32 @@ namespace IM2B.Controllers
 
         // Create GET - Formulário para criar novo ator
         [Authorize(Roles = "Curador")]
-        [HttpGet]
+        [HttpGet("Ator/Create/")]
         public IActionResult Create()
         {
-            return View();
+            var vm = new FormAtorViewModel();
+            return View(vm);
         }
 
         // Create POST - Processar criação do ator
         [Authorize(Roles = "Curador")]
-        [HttpPost]
+        [HttpPost("Ator/Create/")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Ator ator)
+        public async Task<IActionResult> Create(FormAtorViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                // TODO: _context.Atores.Add(ator);
-                // TODO: _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                var ator = new Ator
+                {
+                    Nome = vm.Nome,
+                    DataNasc = vm.DataNasc,
+                    DataObito = vm.DataObito,
+                    Biografia = vm.Biografia
+                };
+                int atorId = await _atorRepo.AddAsync(ator);
+                return RedirectToAction(nameof(Details), new { id = atorId });
             }
-            return View(ator);
+            return View(vm);
         }
 
         // Edit GET - Formulário para editar ator
@@ -63,27 +71,45 @@ namespace IM2B.Controllers
             var ator = await _atorRepo.GetByIdAsync(id);
             if (ator == null) return NotFound();
 
-            return View(ator);
+            var vm = new FormAtorViewModel()
+            {
+                Id = ator.Id,
+                Nome = ator.Nome,
+                DataNasc = ator.DataNasc,
+                DataObito = ator.DataObito,
+                Biografia = ator.Biografia
+            };
+
+            return View(vm);
         }
 
         // Edit POST - Processar edição do ator
         [Authorize(Roles = "Curador")]
         [HttpPost("Ator/Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Ator ator)
+        public async Task<IActionResult> Edit(int id, FormAtorViewModel vm)
         {
             
-            if (id != ator.Id)
+            if (id != vm.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                _atorRepo.UpdateAsync(ator);
+                var ator = await _atorRepo.GetByIdAsync(id);
+                if (ator == null)
+                    return NotFound();
+                ator.Nome = vm.Nome;
+                ator.DataNasc = vm.DataNasc;
+                ator.DataObito = vm.DataObito;
+                ator.Biografia = vm.Biografia;
+
+
+                await _atorRepo.UpdateAsync(ator);
                 return RedirectToAction(nameof(Index));
             }
-            return View(ator);
+            return View(vm);
         }
 
         // Delete GET - Confirmar exclusão
