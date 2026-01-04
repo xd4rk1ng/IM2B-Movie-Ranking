@@ -16,8 +16,8 @@ namespace context.Repositories
 
         public async Task<Papel?> GetByIdAsync(int id) =>
             await _context.Papeis
-                .Where(f => f.Id == id)
-                .Select(f => f.ToModel())
+                .Where(p => p.Id == id)
+                .Select(p => p.ToModel())
                 .FirstOrDefaultAsync();
 
         public async Task<List<Papel>> GetAllAsync() =>
@@ -25,15 +25,17 @@ namespace context.Repositories
                 .Select(e => e.ToModel())
                 .ToListAsync();
 
-        public async Task AddAsync(Papel filme)
+        public async Task<int> AddAsync(Papel papel)
         {
-            _context.Papeis.Add(filme.ToEntity());
+            var papelEntity = papel.ToEntity();
+            _context.Papeis.Add(papelEntity);
             await _context.SaveChangesAsync();
+            return papelEntity.Id;
         }
 
-        public async Task UpdateAsync(Papel filme)
+        public async Task UpdateAsync(Papel papel)
         {
-            _context.Papeis.Update(filme.ToEntity());
+            _context.Papeis.Update(papel.ToEntity());
             await _context.SaveChangesAsync();
         }
 

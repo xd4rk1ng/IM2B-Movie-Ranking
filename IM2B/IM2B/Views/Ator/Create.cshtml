@@ -1,16 +1,13 @@
 ﻿@model IM2B.ViewModels.Ator.FormAtorViewModel
 
 @{
-    ViewData["Title"] = "Editar Ator";
+    ViewData["Title"] = "Criar Ator";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    @* Hidden Id for Edit *@
-    <input type="hidden" asp-for="Id" />
 
     <div class="form-group mb-3">
         <label asp-for="Nome" class="form-label"></label>
@@ -36,9 +33,7 @@
         <span asp-validation-for="Biografia" class="text-danger"></span>
     </div>
 
-
-
-    <button type="submit" class="btn btn-primary">Salvar</button>
+    <button type="submit" class="btn btn-primary">Criar</button>
     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </form>
 

@@ -7,13 +7,44 @@ using Microsoft.EntityFrameworkCore;
 using shared.Interfaces;
 using shared.Models;
 
+string ConnectionSelector()
+{
+    while (true)
+    {
+        Console.WriteLine("##################################");
+        Console.WriteLine("Select database connection string:\n");
+        Console.WriteLine("1) Container DB");
+        Console.WriteLine("2) Sergio DB");
+        Console.WriteLine("3) Talita DB");
+        Console.WriteLine();
+        Console.Write("\nChoice: ");
+        string? input = Console.ReadLine();
+
+        switch (input)
+        {
+            case "1":
+                return "ContainerConnection";
+            case "2":
+                return "TalitaConnection";
+            case "3":
+                return "SergioConnection";
+            default:
+                Console.WriteLine("\nInvalid option. Press any key...");
+                Console.ReadKey();
+                break;
+        }
+    }
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+
 // Configurar Entity Framework e SQL Server
-string? connectionString = builder.Configuration.GetConnectionString("SergioConnection");
+string? connectionString = builder.Configuration.GetConnectionString(ConnectionSelector());
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("context")));
 
@@ -24,25 +55,25 @@ builder.Services.AddScoped<IGenericRepository<Papel>, PapelRepository>();
 // Configurar Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
-    // Configurações de senha
+    // Configuraï¿½ï¿½es de senha
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
 
-    // Configurações de bloqueio
+    // Configuraï¿½ï¿½es de bloqueio
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
 
-    // Configurações de utilizador
+    // Configuraï¿½ï¿½es de utilizador
     options.User.RequireUniqueEmail = true;
 })
 .AddEntityFrameworkStores<ApplicationContext>()
 .AddDefaultTokenProviders();
 
-// Configurar autenticação por cookie
+// Configurar autenticaï¿½ï¿½o por cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -57,24 +88,30 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-    var seeder = new Seeder(db);
-    seeder.Seed(); // generate default number random films
-    //seeder.Seed(5); // generate specified number random films
+
+    try
+    {
+        var seeder = new Seeder(db);
+        await seeder.SeedContentsAsync(); // generate default number random films
+    }
+    catch(Exception ex)
+    {
+        Console.WriteLine("Erro ao popular base de dados: " + ex.Message);
+    }
+    //seeder.SeedContentsAsync(5); // generate specified number random films
 }
 
-// Criar roles ao iniciar a aplicação
+// Criar roles ao iniciar a aplicaï¿½ï¿½o
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-        await EnsureRolesAsync(roleManager);
+        await CuradorSeeder.Seed(services);
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Erro ao criar roles.");
+        Console.WriteLine("Erro ao criar roles: " + ex.Message);
     }
 }
 

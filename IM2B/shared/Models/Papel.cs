@@ -11,6 +11,9 @@
         public string Personagem { get; set; }
         public bool Principal { get; set; }
 
+        // Construtor Vazio (NAO REMOVER)
+        public Papel() { }
+
         // Placeholder Constructor
         public Papel(
             int id,
