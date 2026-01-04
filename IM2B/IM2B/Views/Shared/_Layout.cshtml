@@ -75,25 +75,35 @@
                     else
                     {
                         <div class="navbar-nav">
-                            @if (role == "Utilizador")
-                            {
-                                <a class="nav-link" asp-controller="Account" asp-action="Index">@nome</a>
-                            }
-                            else
-                            {
-                                <a class="nav-link" asp-controller="Account" asp-action="Index">Administrator</a>
-                            }
-                        </div>
-                        <div class="navbar-nav">
-                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-link nav-link">Logout</button>
-                            </form>
+                            <div class="nav-item d-flex flex-column align-items-center">
+                                <!-- Username and icon -->
+                                <a class="nav-link d-flex align-items-center pb-0" asp-controller="Account" asp-action="Index">
+                                    <i class="fas fa-user-circle fa-lg me-2" aria-hidden="true"></i>
+                                    <span class="fw-semibold">
+                                        @if (role == "Utilizador")
+                                        {
+                                            @nome
+                                        }
+                                        else
+                                        {
+                                            <span>Administrator</span>
+                                        }
+                                    </span>
+                                </a>
+
+                                <!-- Logout (centered subtitle style) -->
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit"
+                                            class="btn btn-link p-0 small account-logout"
+                                            style="text-decoration: none;">
+                                        <i class="bi bi-door-open me-1" aria-hidden="true"></i> Logout
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     }
 
-                    <!-- Área de autenticação -->
-                    <!-- <partial name="_LoginPartial" /> -->
                 </div>
             </div>
         </nav>
