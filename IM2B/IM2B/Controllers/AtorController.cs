@@ -139,20 +139,43 @@ namespace IM2B.Controllers
             return View(vm);
         }
 
-        // Delete POST - Processar exclusão
+        // Delete GET - Exibir confirmação de exclusão
         [Authorize(Roles = "Curador")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet("Ator/Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            // So para ter meeeesmo a certeza
-            var result = await _atorRepo.GetByIdAsync(id);
-            if (result == null)
+            var ator = await _atorRepo.GetByIdAsync(id);
+            if (ator == null)
                 return NotFound();
 
+            return View(ator);
+        }
+
+        // Delete POST - Processar exclusão
+        [Authorize(Roles = "Curador")]
+        [HttpPost("Ator/Delete/{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
             await _atorRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+
+        // Delete POST - Processar exclusão
+        //[Authorize(Roles = "Curador")]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        // So para ter meeeesmo a certeza
+        //    var result = await _atorRepo.GetByIdAsync(id);
+        //    if (result == null)
+        //        return NotFound();
+        //
+        //    await _atorRepo.DeleteAsync(id);
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         // Buscar - Pesquisar atores por nome
         public IActionResult Search(string termo)

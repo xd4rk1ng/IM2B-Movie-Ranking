@@ -1,0 +1,87 @@
+﻿@model shared.Models.Ator
+
+@{
+    ViewData["Title"] = "Excluir Ator";
+}
+
+<div class="hero-section">
+    <div class="container">
+        <h2 class="mb-3"><i class="fas fa-trash-alt"></i> Excluir Ator</h2>
+        <p class="text-danger">Tem certeza que deseja excluir este ator?</p>
+    </div>
+</div>
+
+<div class="card bg-dark text-light border-danger">
+    <div class="card-header bg-danger">
+        <h3 class="mb-0">@Model.Nome</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">
+                <i class="fas fa-user"></i> Nome
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Nome
+            </dd>
+
+            <dt class="col-sm-3">
+                <i class="fas fa-birthday-cake"></i> Data de Nascimento
+            </dt>
+            <dd class="col-sm-9">
+                @Model.DataNasc.ToString("dd/MM/yyyy")
+            </dd>
+
+            @if (Model.DataObito.HasValue)
+            {
+                <dt class="col-sm-3">
+                    <i class="fas fa-cross"></i> Data de Óbito
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.DataObito.Value.ToString("dd/MM/yyyy")
+                </dd>
+            }
+
+            <dt class="col-sm-3">
+                <i class="fas fa-align-left"></i> Biografia
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Biografia
+            </dd>
+
+            @if (Model.Filmes != null && Model.Filmes.Any())
+            {
+                <dt class="col-sm-3">
+                    <i class="fas fa-film"></i> Filmes
+                </dt>
+                <dd class="col-sm-9">
+                    @foreach (var filme in Model.Filmes)
+                    {
+                        <span class="badge bg-secondary me-1">@filme.Titulo</span>
+                    }
+                </dd>
+            }
+        </dl>
+
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Atenção!</strong> Esta ação não pode ser desfeita. Todos os dados do ator serão removidos permanentemente do sistema.
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> Confirmar Exclusão
+                </button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                <a asp-action="Index" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left"></i> Voltar à lista
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
