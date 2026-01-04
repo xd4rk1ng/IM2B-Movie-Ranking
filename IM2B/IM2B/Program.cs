@@ -7,13 +7,44 @@ using Microsoft.EntityFrameworkCore;
 using shared.Interfaces;
 using shared.Models;
 
+string ConnectionSelector()
+{
+    while (true)
+    {
+        Console.WriteLine("##################################");
+        Console.WriteLine("Select database connection string:\n");
+        Console.WriteLine("1) Container DB");
+        Console.WriteLine("2) Sergio DB");
+        Console.WriteLine("3) Talita DB");
+        Console.WriteLine();
+        Console.Write("\nChoice: ");
+        string? input = Console.ReadLine();
+
+        switch (input)
+        {
+            case "1":
+                return "ContainerConnection";
+            case "2":
+                return "TalitaConnection";
+            case "3":
+                return "SergioConnection";
+            default:
+                Console.WriteLine("\nInvalid option. Press any key...");
+                Console.ReadKey();
+                break;
+        }
+    }
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+
 // Configurar Entity Framework e SQL Server
-string? connectionString = builder.Configuration.GetConnectionString("TalitaConnection");
+string? connectionString = builder.Configuration.GetConnectionString(ConnectionSelector());
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("context")));
 
