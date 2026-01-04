@@ -5,6 +5,7 @@ using IM2B.ViewModels;
 using shared.Interfaces;
 using IM2B.ViewModels.Filme;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 
 namespace IM2B.Controllers
 {
@@ -21,10 +22,12 @@ namespace IM2B.Controllers
         }
 
         // Index - Listar todos os filmes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
             var filmes = await _filmeRepo.GetAllAsync();
-            //var filmes = new List<Filme>(); // Placeholder
+            if (!string.IsNullOrWhiteSpace(search))
+                filmes = filmes.Where(a => a.Titulo.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            ViewData["CurrentSearch"] = search ?? "";
             return View(filmes);
         }
 
@@ -63,16 +66,6 @@ namespace IM2B.Controllers
 
             return View(vm);
         }
-
-
-        //public IActionResult Details(int id)
-        //{
-        // TODO: var filme = _context.Filmes.Include(f => f.Atores).FirstOrDefault(f => f.Id == id);
-        // if (filme == null) return NotFound();
-
-        //var filme = new Filme(); // Placeholder
-        //    return View(/*filme*/);
-        //}
 
         // Create GET - Formulário para criar novo filme
         [Authorize(Roles = "Curador")]
