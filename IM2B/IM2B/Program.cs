@@ -7,34 +7,35 @@ using Microsoft.EntityFrameworkCore;
 using shared.Interfaces;
 using shared.Models;
 
-static string ConnectionSelector()
-{
-    while (true)
-    {
-        Console.WriteLine("##################################");
-        Console.WriteLine("Select database connection string:\n");
-        Console.WriteLine("1) Container DB");
-        Console.WriteLine("2) Sergio DB");
-        Console.WriteLine("3) Talita DB");
-        Console.WriteLine();
-        Console.Write("\nChoice: ");
-        string? input = Console.ReadLine();
+// Use this when developing to avoid messing with connection string in program everytime
+//static string ConnectionSelector()
+//{
+//    while (true)
+//    {
+//        Console.WriteLine("##################################");
+//        Console.WriteLine("Select database connection string:\n");
+//        Console.WriteLine("1) Container DB");
+//        Console.WriteLine("2) Sergio DB");
+//        Console.WriteLine("3) Talita DB");
+//        Console.WriteLine();
+//        Console.Write("\nChoice: ");
+//        string? input = Console.ReadLine();
 
-        switch (input)
-        {
-            case "1":
-                return "ContainerConnection";
-            case "2":
-                return "SergioConnection";
-            case "3":
-                return "TalitaConnection";
-            default:
-                Console.WriteLine("\nInvalid option. Press any key...");
-                Console.ReadKey();
-                break;
-        }
-    }
-}
+//        switch (input)
+//        {
+//            case "1":
+//                return "ContainerConnection";
+//            case "2":
+//                return "SergioConnection";
+//            case "3":
+//                return "TalitaConnection";
+//            default:
+//                Console.WriteLine("\nInvalid option. Press any key...");
+//                Console.ReadKey();
+//                break;
+//        }
+//    }
+//}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,7 @@ builder.Services.AddControllersWithViews();
 
 // Configurar Entity Framework e SQL Server
 //string? connectionString = builder.Configuration.GetConnectionString(ConnectionSelector());
-string? connectionString = builder.Configuration.GetConnectionString(ConnectionSelector());
+string? connectionString = builder.Configuration.GetConnectionString("ContainerString");
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("context")));
 
