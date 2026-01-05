@@ -75,17 +75,12 @@ else
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
 
-                                <form asp-action="Delete"
-                                    asp-route-id="@ator.Id"
-                                    method="post"
-                                    class="d-inline"
-                                    onsubmit="return confirm('Tem certeza que deseja apagar este ator?');">
-                                    <button type="submit"
-                                            class="btn btn-sm btn-outline-danger"
-                                            title="Apagar">
-                                        <i class="fas fa-trash"></i> Apagar
-                                    </button>
-                                </form>
+                                <a asp-action="Delete"
+                                   asp-route-id="@ator.Id"
+                                   class="btn btn-sm btn-outline-danger"
+                                   title="Apagar">
+                                    <i class="fas fa-trash"></i> Apagar
+                                </a>
                             }
                         </td>
                     </tr>

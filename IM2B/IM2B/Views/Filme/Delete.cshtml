@@ -1,0 +1,114 @@
+﻿@model shared.Models.Filme
+
+@{
+    ViewData["Title"] = "Excluir Filme";
+}
+
+<div class="hero-section">
+    <div class="container">
+        <h2 class="mb-3"><i class="fas fa-trash-alt"></i> Excluir Filme</h2>
+        <p class="text-danger">Tem certeza que deseja excluir este filme?</p>
+    </div>
+</div>
+
+<div class="card bg-dark text-light border-danger">
+    <div class="card-header bg-danger">
+        <h3 class="mb-0">@Model.Titulo</h3>
+        <div class="rating mt-2">
+            @for (int i = 0; i < Model.Avaliacao; i++)
+            {
+                <i class="fas fa-star"></i>
+            }
+            @for (int i = Model.Avaliacao; i < 5; i++)
+            {
+                <i class="far fa-star"></i>
+            }
+            (@Model.Avaliacao/5)
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">
+                <i class="fas fa-heading"></i> Título
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Titulo
+            </dd>
+
+            <dt class="col-sm-3">
+                <i class="fas fa-align-left"></i> Sinopse
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Sinopse
+            </dd>
+
+            <dt class="col-sm-3">
+                <i class="fas fa-calendar-alt"></i> Data de Lançamento
+            </dt>
+            <dd class="col-sm-9">
+                @Model.DataLancamento.ToString("dd/MM/yyyy")
+            </dd>
+
+            <dt class="col-sm-3">
+                <i class="fas fa-clock"></i> Duração
+            </dt>
+            <dd class="col-sm-9">
+                @{
+                    var duracao = Model.Duracao;
+                    var horas = duracao.Hours;
+                    var minutos = duracao.Minutes;
+                }
+                @horas h @minutos min
+            </dd>
+
+            <dt class="col-sm-3">
+                <i class="fas fa-star"></i> Avaliação
+            </dt>
+            <dd class="col-sm-9">
+                @for (int i = 0; i < Model.Avaliacao; i++)
+                {
+                    <i class="fas fa-star text-warning"></i>
+                }
+                @for (int i = Model.Avaliacao; i < 5; i++)
+                {
+                    <i class="far fa-star"></i>
+                }
+                (@Model.Avaliacao/5)
+            </dd>
+
+            @if (Model.Atores != null && Model.Atores.Any())
+            {
+                <dt class="col-sm-3">
+                    <i class="fas fa-users"></i> Atores
+                </dt>
+                <dd class="col-sm-9">
+                    @foreach (var ator in Model.Atores)
+                    {
+                        <span class="badge bg-secondary me-1">@ator.Nome</span>
+                    }
+                </dd>
+            }
+        </dl>
+
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Atenção!</strong> Esta ação não pode ser desfeita. Todos os dados do filme serão removidos permanentemente do sistema.
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> Confirmar Exclusão
+                </button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                <a asp-action="Index" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left"></i> Voltar à lista
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

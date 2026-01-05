@@ -149,10 +149,18 @@ namespace IM2B.Controllers
         [Authorize(Roles = "Curador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            await _filmeRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        //public IActionResult DeleteConfirmed(int id)
+        //{
+        // TODO: var filme = _context.Filmes.Find(id);
+        // TODO: _context.Filmes.Remove(filme);
+        // TODO: _context.SaveChanges();
+        // return RedirectToAction(nameof(Index));
+        //}
 
         // AtribuirPapel GET - Formulário para atribuir ator a filme
         [Authorize(Roles = "Curador")]
