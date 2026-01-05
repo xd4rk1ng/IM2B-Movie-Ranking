@@ -1,7 +1,9 @@
 # IM2B - Sistema de Gestão de Filmes e Atores
 
 ## Grupo
+
 **Integrantes:**
+
 - Diego Mayrink: responsável pelos controladores (e autenticação)
 - Rui Santos: responsável pela base de dados e repositorios
 - Sergio Sant'Anna: responsável pelos models e viewmodels
@@ -10,11 +12,13 @@
 ---
 
 ## Descrição do Projeto
+
 Projeto desenvolvido para a UC00608, formador Tiago Filipe Borges baseado num Sistema web desenvolvido em ASP.NET Core MVC para gestão de filmes, atores e seus papéis. Permite cadastro, edição, visualização e exclusão de filmes e atores, além de controle de acesso com autenticação de usuários.
 
 ---
 
 ## Requisitos do Sistema
+
 - .NET 8.0 SDK
 - SQL Server (Express ou superior)
 - Visual Studio 2022 ou superior (recomendado)
@@ -33,27 +37,32 @@ Abra o arquivo **`IM2B/appsettings.json`** e configure a connection string do se
     "ContainerConnection": "Server=SEU_SERVIDOR;Database=IM2B;User Id=SEU_USUARIO;Password=SUA_SENHA;Encrypt=True;TrustServerCertificate=True;",
     "SergioConnection": "Data Source=SEU_SERVIDOR\\SQLEXPRESS;Database=IM2B;Trusted_Connection=True;TrustServerCertificate=True;",
     "TalitaConnection": "Data Source=SEU_SERVIDOR\\SQLEXPRESS;Database=IM2B;Persist Security Info=False;User ID=sa;Password=SUA_SENHA;Encrypt=False;"
+    "DiegoConnection": "Data Source=diego\\sqlexpress;Database=IM2B;Persist Security Info=False;User ID=sa;Password=8201cs4pga;Pooling=False;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Command Timeout=0"
+
   }
 }
 ```
 
 **Exemplo com Windows Authentication (recomendado):**
+
 ```json
 "MinhaConnection": "Data Source=.\\SQLEXPRESS;Database=IM2B;Trusted_Connection=True;TrustServerCertificate=True;"
 ```
 
 **Exemplo com SQL Server Authentication:**
+
 ```json
 "MinhaConnection": "Server=localhost;Database=IM2B;User Id=sa;Password=SuaSenha123!;Encrypt=True;TrustServerCertificate=True;"
 ```
 
 ### 2. Criar a Base de Dados
-- Coloque seu SQL Server Configuration Manager em modo de execução
 
+- Coloque seu SQL Server Configuration Manager em modo de execução
 
 ### 3. Criar a Base de Dados
 
 Abra o **Package Manager Console** no Visual Studio:
+
 - Menu: `Tools` > `NuGet Package Manager` > `Package Manager Console`
 - Selecione o projeto **`context`** como Default Project
 - Execute os seguintes comandos:
@@ -77,12 +86,14 @@ Update-Database
 ## Credenciais de Acesso
 
 ### Administrador (Curador)
+
 - **Email:** `curador@email.pt`
 - **Username:** `Curador`
 - **Senha:** `Curador123!`
 - **Permissões:** Acesso total ao sistema (criar, editar e apagar filmes/atores)
 
 ### Registrar Novo Utilizador
+
 - Acesse a página de registro no menu
 - Novos usuários recebem o papel de "Utilizador" (apenas visualização)
 
@@ -123,21 +134,25 @@ IM2B/
 ## Problemas Comuns
 
 ### Erro de conexão com o banco de dados
+
 - Verifique se o SQL Server está em execução
 - Confirme se a connection string está correta
 - Verifique as credenciais de acesso
 
 ### Erro ao executar migrations
+
 - Certifique-se de que selecionou o projeto **`context`** no Package Manager Console
 - Delete a pasta `Migrations` e execute novamente `Add-Migration` e `Update-Database`
 
 ### Não consegue fazer login
+
 - Verifique se executou o `Update-Database` corretamente
 - Certifique-se de que a aplicação iniciou sem erros no console (criação do Curador)
 
 ---
 
 ## Observações
+
 - O sistema cria automaticamente dados de exemplo (filmes e atores) na primeira execução
 - A base de dados será criada automaticamente ao executar as migrations
 - Certifique-se de que o SQL Server permite conexões TCP/IP se usar SQL Authentication
