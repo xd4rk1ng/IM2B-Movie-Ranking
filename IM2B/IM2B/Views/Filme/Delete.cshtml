@@ -1,4 +1,4 @@
-﻿@model shared.Models.Filme
+﻿@model IM2B.ViewModels.Filme.DetailsFilmeViewModel
 
 @{
     ViewData["Title"] = "Excluir Filme";
@@ -15,7 +15,7 @@
     <div class="card-header bg-danger">
         <h3 class="mb-0">@Model.Titulo</h3>
         <div class="rating mt-2">
-            @for (int i = 0; i < Model.Avaliacao; i++)
+            @for (int i = 0; i < Model.Avaliacao && i < 5; i++)
             {
                 <i class="fas fa-star"></i>
             }
@@ -23,35 +23,21 @@
             {
                 <i class="far fa-star"></i>
             }
-            (@Model.Avaliacao/5)
+            <span class="ms-2">(@Model.Avaliacao/5)</span>
         </div>
     </div>
     <div class="card-body">
         <dl class="row">
-            <dt class="col-sm-3">
-                <i class="fas fa-heading"></i> Título
-            </dt>
-            <dd class="col-sm-9">
-                @Model.Titulo
-            </dd>
+            <dt class="col-sm-3"><i class="fas fa-heading"></i> Título</dt>
+            <dd class="col-sm-9">@Model.Titulo</dd>
 
-            <dt class="col-sm-3">
-                <i class="fas fa-align-left"></i> Sinopse
-            </dt>
-            <dd class="col-sm-9">
-                @Model.Sinopse
-            </dd>
+            <dt class="col-sm-3"><i class="fas fa-align-left"></i> Sinopse</dt>
+            <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Sinopse) ? Model.Sinopse : "Não disponível")</dd>
 
-            <dt class="col-sm-3">
-                <i class="fas fa-calendar-alt"></i> Data de Lançamento
-            </dt>
-            <dd class="col-sm-9">
-                @Model.DataLancamento.ToString("dd/MM/yyyy")
-            </dd>
+            <dt class="col-sm-3"><i class="fas fa-calendar-alt"></i> Data de Lançamento</dt>
+            <dd class="col-sm-9">@Model.DataLancamento.ToString("dd/MM/yyyy")</dd>
 
-            <dt class="col-sm-3">
-                <i class="fas fa-clock"></i> Duração
-            </dt>
+            <dt class="col-sm-3"><i class="fas fa-clock"></i> Duração</dt>
             <dd class="col-sm-9">
                 @{
                     var duracao = Model.Duracao;
@@ -61,11 +47,9 @@
                 @horas h @minutos min
             </dd>
 
-            <dt class="col-sm-3">
-                <i class="fas fa-star"></i> Avaliação
-            </dt>
+            <dt class="col-sm-3"><i class="fas fa-star"></i> Avaliação</dt>
             <dd class="col-sm-9">
-                @for (int i = 0; i < Model.Avaliacao; i++)
+                @for (int i = 0; i < Model.Avaliacao && i < 5; i++)
                 {
                     <i class="fas fa-star text-warning"></i>
                 }
@@ -73,14 +57,12 @@
                 {
                     <i class="far fa-star"></i>
                 }
-                (@Model.Avaliacao/5)
+                <span class="ms-2">(@Model.Avaliacao/5)</span>
             </dd>
 
             @if (Model.Atores != null && Model.Atores.Any())
             {
-                <dt class="col-sm-3">
-                    <i class="fas fa-users"></i> Atores
-                </dt>
+                <dt class="col-sm-3"><i class="fas fa-users"></i> Atores</dt>
                 <dd class="col-sm-9">
                     @foreach (var ator in Model.Atores)
                     {

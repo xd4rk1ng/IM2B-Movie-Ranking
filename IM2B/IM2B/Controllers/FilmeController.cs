@@ -145,6 +145,39 @@ namespace IM2B.Controllers
             return View(vm);
         }
 
+        // Delete GET - Confirmar exclusão
+        [Authorize(Roles = "Curador")]
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var filme = await _filmeRepo.GetByIdAsync(id);
+            if (filme == null) return NotFound();
+
+            var papeis = await _papelRepo.GetAllForFilmeIdAsync(id);
+
+            // Map papeis into AtorViewModel for the filme view model
+            var atoresVm = papeis.Select(p => new IM2B.ViewModels.Filme.AtorViewModel
+            {
+                Id = p.AtorId,
+                Nome = p.Ator.Nome,
+                Personagem = p.Personagem,
+                Principal = p.Principal,
+            }).ToList();
+
+            var vm = new DetailsFilmeViewModel
+            {
+                Id = filme.Id,
+                Titulo = filme.Titulo,
+                Sinopse = filme.Sinopse,
+                DataLancamento = filme.DataLancamento,
+                Duracao = filme.Duracao,
+                Avaliacao = filme.Avaliacao,
+                Atores = atoresVm
+            };
+
+            return View(vm);
+        }
+
         // Delete POST - Processar exclusão
         [Authorize(Roles = "Curador")]
         [HttpPost, ActionName("Delete")]
