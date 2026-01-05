@@ -34,6 +34,10 @@ namespace context.Repositories
                 .AsNoTracking()
                 .Select(a => a.ToModel())
                 .ToListAsync();
+        public async Task<List<Ator>> GetAllTrackedAsync() =>
+            await _context.Atores
+                .Select(a => a.ToModel())
+                .ToListAsync();
 
         public async Task<int> AddAsync(Ator ator)
         {

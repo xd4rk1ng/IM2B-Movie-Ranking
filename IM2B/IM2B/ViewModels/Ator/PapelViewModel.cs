@@ -9,7 +9,6 @@ namespace IM2B.ViewModels.Ator
         public string FilmeTitulo { get; set; }
         public string Personagem { get; set; }
         public bool Principal { get; set; }
-        //public Filme Filme { get; set; }
         public DateOnly DataLancamento { get; set; }
     }
 }

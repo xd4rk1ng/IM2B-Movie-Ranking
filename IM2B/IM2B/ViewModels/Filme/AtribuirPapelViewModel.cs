@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IM2B.ViewModels
+namespace IM2B.ViewModels.Filme
 {
     public class AtribuirPapelViewModel
     {

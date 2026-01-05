@@ -7,7 +7,7 @@
 <div class="hero-section">
     <div class="container">
         <h2 class="mb-3"><i class="fas fa-plus-circle"></i> Adicionar Novo Filme</h2>
-        <p class="text-muted">Apenas curadores podem adicionar filmes ao catálogo</p>
+        <p class="text-secondary">Apenas curadores podem adicionar filmes ao catálogo</p>
     </div>
 </div>
 
@@ -50,12 +50,15 @@
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label asp-for="Duracao" class="form-label">
-                            <i class="fas fa-clock"></i> Duração (HH:MM:SS)
+                            <i class="fas fa-clock"></i> Duração (mins)
                         </label>
-                        <input asp-for="Duracao" class="form-control bg-dark text-light border-secondary" type="time" step="1"
-                               value="@(Model.Duracao.ToString(@"hh\:mm\:ss"))" />
+                        <input asp-for="Duracao"
+                               type="number"
+                               id="duracao"
+                               step="1"
+                               class="form-control bg-dark text-light border-secondary"
+                               placeholder="Duração em minutos" />
                         <span asp-validation-for="Duracao" class="text-danger"></span>
-                        <small class="form-text text-muted">Formato: Horas:Minutos:Segundos</small>
                     </div>
                 </div>
             </div>

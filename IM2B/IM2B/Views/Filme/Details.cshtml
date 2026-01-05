@@ -69,7 +69,19 @@
                                     <i class="fas fa-user-circle"></i> @ator.Nome
                                     @if (!string.IsNullOrWhiteSpace(ator.Personagem))
                                     {
-                                        <small class="text-muted"> — @ator.Personagem</small>
+                                        <small class="form-text" style="color: #ccc;">
+                                            — @ator.Personagem
+                                            @if (ator.Principal)
+                                            {
+                                                <i class="fas fa-star text-warning ms-1" title="Principal"></i>
+                                            }
+                                        </small>
+                                    }
+                                    else if (ator.Principal)
+                                    {
+                                        <small class="text-secondary">
+                                            <i class="fas fa-star text-warning ms-1" title="Principal"></i>
+                                        </small>
                                     }
                                 </a>
                             </li>
@@ -78,7 +90,7 @@
                 }
                 else
                 {
-                    <span class="text-muted">Nenhum ator associado</span>
+                    <span class="text-secondary">Nenhum ator associado</span>
                 }
             </dd>
         </dl>

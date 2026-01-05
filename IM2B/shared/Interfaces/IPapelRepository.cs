@@ -11,6 +11,7 @@ namespace shared.Interfaces
         where Model : class
     {
         Task<List<Papel>> GetAllForAtorIdAsync(int id);
-        Task<List<Papel>> GetAllForFilmeIdAsync(int id);
+        Task<Papel> GetByIdsAsync(int filmeId, int atorId);
+        Task <List<Papel>> GetAllForFilmeIdAsync(int id);
     }
 }

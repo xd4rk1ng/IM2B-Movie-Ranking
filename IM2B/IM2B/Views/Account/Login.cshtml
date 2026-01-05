@@ -1,4 +1,5 @@
-﻿@model IM2B.ViewModels.LoginViewModel
+﻿@using IM2B.ViewModels.Account
+@model LoginViewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -27,13 +28,13 @@
 
                 <form class="login-form" asp-action="Login" asp-controller="Account" method="post" novalidate>
                     <div class="mb-3">
-                        <label for="username" class="form-label">Email</label>
+                        <label for="username" class="form-label">Username</label>
                         <input autofocus
                                type="text"
                                class="form-control"
-                               id="email"
-                               asp-for="Email" />
-                        <span asp-validation-for="Email" class="text-danger small"></span>
+                               id="username"
+                               asp-for="UserName" />
+                        <span asp-validation-for="UserName" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">

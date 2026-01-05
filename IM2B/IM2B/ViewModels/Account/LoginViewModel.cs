@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IM2B.ViewModels
+namespace IM2B.ViewModels.Account
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "O email é obrigatório")]
-        [EmailAddress(ErrorMessage = "Email inválido")]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "O nome de utilizador é obrigatório")]
+        [Display(Name = "Nome de utilizador")]
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "A senha é obrigatória")]
         [DataType(DataType.Password)]
