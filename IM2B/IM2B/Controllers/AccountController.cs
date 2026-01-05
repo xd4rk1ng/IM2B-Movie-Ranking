@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using context.Entities;
-using IM2B.ViewModels;
+using IM2B.ViewModels.Account;
 
 namespace IM2B.Controllers
 {
@@ -87,7 +87,7 @@ namespace IM2B.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.Email,
+                    model.UserName,
                     model.Password,
                     model.RememberMe,
                     lockoutOnFailure: false);
@@ -103,9 +103,18 @@ namespace IM2B.Controllers
                     _logger.LogWarning("Conta de utilizador bloqueada.");
                     return RedirectToAction(nameof(Lockout));
                 }
+                if (result.IsNotAllowed)
+                {
+                    _logger.LogWarning("Não permitido (email não confirmado?)");
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    _logger.LogWarning("Precisa de 2FA");
+                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
+                    Console.WriteLine($"{result}");
                     return View(model);
                 }
             }

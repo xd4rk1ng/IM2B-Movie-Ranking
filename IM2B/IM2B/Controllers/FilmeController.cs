@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shared.Models;
-using IM2B.ViewModels;
 using shared.Interfaces;
 using IM2B.ViewModels.Filme;
 using System.Threading.Tasks;
