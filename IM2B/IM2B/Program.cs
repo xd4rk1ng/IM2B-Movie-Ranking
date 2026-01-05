@@ -45,7 +45,7 @@ builder.Services.AddControllersWithViews();
 
 // Configurar Entity Framework e SQL Server
 //string? connectionString = builder.Configuration.GetConnectionString(ConnectionSelector());
-string? connectionString = builder.Configuration.GetConnectionString("ContainerConnection");
+string? connectionString = builder.Configuration.GetConnectionString(ConnectionSelector());
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("context")));
 
