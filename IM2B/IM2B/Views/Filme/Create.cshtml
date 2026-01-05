@@ -50,12 +50,15 @@
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label asp-for="Duracao" class="form-label">
-                            <i class="fas fa-clock"></i> Duração (HH:MM:SS)
+                            <i class="fas fa-clock"></i> Duração (mins)
                         </label>
-                        <input asp-for="Duracao" class="form-control bg-dark text-light border-secondary" type="time" step="1"
-                               value="@(Model.Duracao.ToString(@"hh\:mm\:ss"))" />
+                        <input asp-for="Duracao"
+                               type="number"
+                               id="duracao"
+                               step="1"
+                               class="form-control bg-dark text-light border-secondary"
+                               placeholder="Duração em minutos" />
                         <span asp-validation-for="Duracao" class="text-danger"></span>
-                        <small class="form-text text-muted">Formato: Horas:Minutos:Segundos</small>
                     </div>
                 </div>
             </div>
