@@ -5,7 +5,5 @@ namespace context.Entities
     public class User : IdentityUser
     {
         public string NomeCompleto { get; set; }
-
-        public bool IsCurador { get; set; }
     }
 }

@@ -43,7 +43,6 @@ namespace IM2B.Controllers
                     UserName = model.UserName,
                     Email = model.Email,
                     NomeCompleto = model.NomeCompleto,
-                    IsCurador = model.IsCurador
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -205,7 +204,6 @@ namespace IM2B.Controllers
                 NomeCompleto = user.NomeCompleto,
                 UserName = user.UserName,
                 Email = user.Email,
-                IsCurador = user.IsCurador,
                 ChangePassword = false
             };
             return View(model);
@@ -263,7 +261,6 @@ namespace IM2B.Controllers
             user.NomeCompleto = model.NomeCompleto;
             user.UserName = model.UserName;
             user.Email = model.Email;
-            user.IsCurador = model.IsCurador;
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
