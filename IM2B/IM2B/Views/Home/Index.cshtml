@@ -23,58 +23,42 @@
         <h2 class="text-center mb-4">Filmes em Destaque</h2>
 
         <div id="carouselFilmes" class="carousel slide" data-bs-ride="carousel">
-            <!-- Indicadores -->
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselFilmes" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselFilmes" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselFilmes" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-
-            <!-- Slides do Carrossel -->
+            <!-- Slides -->
             <div class="carousel-inner">
-                <!-- Filme 1 Inception-->
-                <div class="carousel-item active">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8 text-center">                           
-                            <img src="~/images/inception.jpg" class="d-block w-100 rounded" alt="Hamlet" style="max-height: 400px; object-fit: cover;">
-                            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
-                                <h5>Inception</h5>
-                                <p>Um ladrão que rouba segredos corporativos através da tecnologia de entrar no subconsciente recebe a tarefa inversa de plantar uma idéia na mente do diretor de uma grande empresa.</p>
-                                <p><strong>Gênero:</strong> Ação | <strong>Ano:</strong> 2010</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @{
+                    bool first = true;
+                }
+                @foreach (var filme in Model)
+                {
+                    <div class="carousel-item @(first ? "active" : "")">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8 text-center">
+                                <img src="@Url.Content($"~/cartazes/{filme.Id}.jpg")"
+                                     class="d-block w-100 rounded"
+                                     style="max-height: 400px; object-fit: cover;"
+                                     alt="@filme.Titulo"
+                                     onerror="this.src='/images/no-poster.png';" />
 
-                <!-- Filme 2 The Iron Lady-->
-                <div class="carousel-item">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8 text-center">                            
-                            <img src="~/images/theIronLady.jpg" class="d-block w-100 rounded" alt="Batalha" style="max-height: 400px; object-fit: cover;">
-                            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
-                                <h5>The Iron Lady</h5>
-                                <p>Margaret Thatcher foi, por mais de dez anos, Primeira-Ministra do Reino Unido. Teve uma série de importantes decisões nas mãos, como a Guerra das Malvinas. O filme mostra, por meio de flashbacks, as acções e vida da "Dama de Ferro".</p>
-                                <p><strong>Gênero:</strong> Drama | <strong>Ano:</strong> 2011</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
+                                    <h5>@filme.Titulo</h5>
+                                    <p>@filme.Sinopse</p>
+                                    <p><strong>Ano:</strong> @filme.DataLancamento.Year</p>
 
-                <!-- Filme 3  The Shawshank Redemption-->
-                <div class="carousel-item">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8 text-center">                            
-                            <img src="~/images/theShawshankRedemption.jpg" class="d-block w-100 rounded" alt="Frankenstein" style="max-height: 400px; object-fit: cover;">
-                            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
-                                <h5>The Shawshank Redemptionn</h5>
-                                <p>Dois homens presos se reúnem ao longo de vários anos, encontrando consolo e eventual redenção através de atos de decência comum.</p>
-                                <p><strong>Gênero:</strong> Drama | <strong>Ano:</strong> 1994</p>
+                                    <a asp-controller="Filme"
+                                       asp-action="Details"
+                                       asp-route-id="@filme.Id"
+                                       class="btn btn-sm btn-warning">
+                                        <i class="fas fa-eye"></i> Ver Detalhes
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    first = false;
+                }
             </div>
 
+            <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselFilmes" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Anterior</span>
@@ -84,6 +68,10 @@
                 <span class="visually-hidden">Próximo</span>
             </button>
         </div>
+    </div>
+</div>
+
+
 
         <!-- Link para Catálogo Completo -->
         <div class="text-center mt-5">
