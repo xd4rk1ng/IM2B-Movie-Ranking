@@ -25,7 +25,7 @@ Projeto desenvolvido para a UC00608, formador Tiago Filipe Borges baseado num Si
 
 ### 1. Configurar a Connection String
 
-Abra o arquivo **`IM2B/appsettings.json`** e configure a connection string do seu SQL Server:
+Abra o arquivo **`IM2B/appsettings.json`** e configure a connection string do seu SQL Server e substitua no "ContainerConnection":
 
 ```json
 {
@@ -48,6 +48,10 @@ Abra o arquivo **`IM2B/appsettings.json`** e configure a connection string do se
 ```
 
 ### 2. Criar a Base de Dados
+- Coloque seu SQL Server Configuration Manager em modo de execução
+
+
+### 3. Criar a Base de Dados
 
 Abra o **Package Manager Console** no Visual Studio:
 - Menu: `Tools` > `NuGet Package Manager` > `Package Manager Console`
@@ -59,12 +63,11 @@ Add-Migration InitialCreate
 Update-Database
 ```
 
-### 3. Executar o Projeto
+### 4. Executar o Projeto
 
 1. Defina o projeto **`IM2B`** como projeto de inicialização (clique com botão direito no projeto > Set as Startup Project)
 2. Pressione **F5** ou clique em **Run**
-3. Ao iniciar, será solicitado no console qual connection string usar (opções 1, 2 ou 3)
-4. A aplicação criará automaticamente:
+3. A aplicação criará automaticamente:
    - As roles (Curador e Utilizador)
    - O usuário administrador (Curador)
    - Filmes e atores de exemplo
@@ -75,6 +78,7 @@ Update-Database
 
 ### Administrador (Curador)
 - **Email:** `curador@email.pt`
+- **Username:** `Curador`
 - **Senha:** `Curador123!`
 - **Permissões:** Acesso total ao sistema (criar, editar e apagar filmes/atores)
 
