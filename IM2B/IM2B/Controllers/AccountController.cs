@@ -154,8 +154,134 @@ namespace IM2B.Controllers
             return View();
         }
 
-        #region Helpers
+        [HttpGet]
+        [Authorize(Roles = "Curador")]
+        public IActionResult UserList()
+        {
+            return View(_userManager.Users.ToList());
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "Curador")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("Utilizador eliminado com sucesso. UserId: {UserId}", id);
+                TempData["StatusMessage"] = "Utilizador eliminado com sucesso.";
+                return RedirectToAction(nameof(UserList));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            // Return the UserList view so the calling page can display errors.
+            // Ensure the view expects a model of IEnumerable<User>.
+            return View("UserList", _userManager.Users.ToList());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Curador")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                NomeCompleto = user.NomeCompleto,
+                UserName = user.UserName,
+                Email = user.Email,
+                IsCurador = user.IsCurador,
+                ChangePassword = false
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Curador")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, EditUserViewModel model)
+        {
+            // Ensure the Id round-trips for redisplay on error
+            model.Id = id;
+
+            // If the user did NOT request a password change, remove any existing
+            // ModelState entries for password fields so they don't block validation.
+            if (!model.ChangePassword)
+            {
+                ModelState.Remove(nameof(model.Password));
+                ModelState.Remove(nameof(model.ConfirmPassword));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // If user requested password change, validate/apply it.
+            if (model.ChangePassword)
+            {
+                if (string.IsNullOrWhiteSpace(model.Password))
+                {
+                    ModelState.AddModelError(nameof(model.Password), "Insira a nova senha ou desmarque 'Alterar Password'.");
+                    return View(model);
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var pwdResult = await _userManager.ResetPasswordAsync(user, token, model.Password);
+                if (!pwdResult.Succeeded)
+                {
+                    foreach (var error in pwdResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+            }
+
+            // Update non-password fields
+            user.NomeCompleto = model.NomeCompleto;
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+            user.IsCurador = model.IsCurador;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("Utilizador atualizado com sucesso. UserId: {UserId}", id);
+                TempData["StatusMessage"] = "Utilizador atualizado com sucesso.";
+                return RedirectToAction(nameof(UserList));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+        }
+
+        #region Helpers
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))

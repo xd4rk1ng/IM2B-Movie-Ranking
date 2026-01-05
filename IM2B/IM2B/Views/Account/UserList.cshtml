@@ -1,0 +1,53 @@
+﻿@model IEnumerable<context.Entities.User>
+
+@{
+    var users = Model.ToList();
+
+    ViewData["Title"] = "Gestão de Utilizadores";
+}
+
+<h2>Lista de Utilizadores</h2>
+
+@if (!users.Any())
+{
+    <div class="alert alert-info text-center" role="alert">
+        <i class="fas fa-info-circle"></i> Nenhum utilizador encontrado.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-dark table-striped table-hover">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-id-badge"></i> ID</th>
+                    <th><i class="fas fa-user"></i> Nome completo</th>
+                    <th><i class="fas fa-user"></i> Nome de Utilizador</th>
+                    <th><i class="fas fa-envelope"></i> Email</th>
+                    <th class="text-center"><i class="fas fa-cog"></i> Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in users)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.NomeCompleto</td>
+                        <td class="movie-title">@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Edit", "Account", new { id = user.Id })" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                            
+                            <form asp-action="Delete" asp-controller="Account" method="post">                                
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem a certeza de que deseja eliminar o utilizador @user.NomeCompleto?');">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </form>                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
