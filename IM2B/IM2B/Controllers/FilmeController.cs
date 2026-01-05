@@ -249,19 +249,13 @@ namespace IM2B.Controllers
         [Authorize(Roles = "Curador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RemoverAtor(int filmeId, int atorId)
+        public async Task<IActionResult> RemoverAtor(int filmeId, int atorId)
         {
-            // TODO: var filme = _context.Filmes.Include(f => f.Atores)
-            //           .FirstOrDefault(f => f.Id == filmeId);
-
-            // if (filme == null) return NotFound();
-
-            // TODO: var ator = filme.Atores.FirstOrDefault(a => a.Id == atorId);
-            // if (ator != null)
-            // {
-            //     filme.Atores.Remove(ator);
-            //     _context.SaveChanges();
-            // }
+            var papel = await _papelRepo.GetByIdsAsync(filmeId, atorId);
+            if (papel != null)
+            {
+                await _papelRepo.DeleteAsync(papel.Id);
+            }
 
             return RedirectToAction(nameof(Details), new { id = filmeId });
         }

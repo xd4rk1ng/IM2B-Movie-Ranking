@@ -10,7 +10,7 @@
 <div class="hero-section">
     <div class="container">
         <h2 class="mb-3"><i class="fas fa-user-plus"></i> Atribuir Ator ao Filme</h2>
-        <p class="text-muted">Preencha os dados do ator para este filme.</p>
+        <p class="text-secondary">Preencha os dados do ator para este filme.</p>
     </div>
 </div>
 
@@ -85,20 +85,42 @@
                                     @ator.Nome
                                     @if (!string.IsNullOrWhiteSpace(ator.Personagem))
                                     {
-                                        <small class="text-muted"> — @ator.Personagem</small>
+                                        <small class="text-secondary"> — @ator.Personagem</small>
+                                    }
+                                    @if (ator.Principal)
+                                    {
+                                        <i class="fas fa-star text-warning ms-2" title="Principal"></i>
                                     }
                                 </span>
-                                @if (ator.Principal)
-                                {
-                                    <i class="fas fa-star text-warning" title="Principal"></i>
-                                }
+
+                                <form asp-action="RemoverAtor"
+                                      asp-controller="Filme"
+                                      method="post"
+                                      class="m-0">
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden" name="filmeId" value="@Model.FilmeId" />
+                                    <input type="hidden" name="atorId" value="@ator.Id" />
+
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm"
+                                            title="Remover ator do filme"
+                                            onclick="return confirm('Tem a certeza que deseja remover este ator do filme?');">
+                                        <i class="fas fa-trash"></i> Remover
+                                    </button>
+                                </form>
                             </li>
                         }
                     </ul>
                 }
                 else
                 {
-                    <span class="text-muted">Nenhum ator associado a este filme ainda.</span>
+                    <span class="text-secondary fw-semibold">Nenhum ator associado a este filme ainda.</span>
+                }
+
+                else
+                {
+                    <span class="text-secondary">Nenhum ator associado a este filme ainda.</span>
                 }
             </div>
         </div>

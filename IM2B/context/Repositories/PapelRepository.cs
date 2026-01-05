@@ -21,6 +21,14 @@ namespace context.Repositories
                 .Select(p => p.ToModel())
                 .FirstOrDefaultAsync();
 
+        public async Task<Papel?> GetByIdsAsync(int filmeId, int atorId) =>
+            await _context.Papeis
+                .AsNoTracking()
+                .Where(p => p.FilmeId == filmeId && p.AtorId == atorId)
+                .Where(p => p.AtorId == atorId)
+                .Select(p => p.ToModel())
+                .FirstOrDefaultAsync();
+
         public async Task<List<Papel>> GetByNameAsync(string name) =>
             await _context.Papeis
                 .AsNoTracking()
