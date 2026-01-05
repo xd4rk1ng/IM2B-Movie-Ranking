@@ -16,6 +16,7 @@ namespace context.Repositories
 
         public async Task<Papel?> GetByIdAsync(int id) =>
             await _context.Papeis
+                .AsNoTracking()
                 .Where(p => p.Id == id)
                 .Select(p => p.ToModel())
                 .FirstOrDefaultAsync();
@@ -29,11 +30,17 @@ namespace context.Repositories
 
         public async Task<List<Papel>> GetAllAsync() =>
             await _context.Papeis
+                .AsNoTracking()
+                .Select(e => e.ToModel())
+                .ToListAsync();
+        public async Task<List<Papel>> GetAllTrackedAsync() =>
+            await _context.Papeis
                 .Select(e => e.ToModel())
                 .ToListAsync();
 
         public async Task<List<Papel>> GetAllForAtorIdAsync(int id) =>
             await _context.Papeis
+                .AsNoTracking()
                 .Where(p => p.AtorId == id)
                 .Include(p => p.Filme)
                 .Select(e => e.ToModel())
@@ -42,6 +49,7 @@ namespace context.Repositories
 
         public async Task<List<Papel>> GetAllForFilmeIdAsync(int id) =>
             await _context.Papeis
+                .AsNoTracking()
                 .Where(p => p.FilmeId == id)
                 .Include(p => p.Ator)
                 .Select(e => e.ToModel())

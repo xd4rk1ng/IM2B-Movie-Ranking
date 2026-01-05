@@ -33,6 +33,11 @@ namespace context.Repositories
                 .Select(e => e.ToModel())
                 .ToListAsync();
 
+        public async Task<List<Filme>> GetAllTrackedAsync() =>
+            await _context.Filmes
+                .Select(e => e.ToModel())
+                .ToListAsync();
+
         public async Task<int> AddAsync(Filme filme)
         {
             var filmeEntity = filme.ToEntity();
