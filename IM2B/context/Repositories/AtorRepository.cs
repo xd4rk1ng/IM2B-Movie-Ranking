@@ -50,8 +50,7 @@ namespace context.Repositories
         public async Task<int> UpdateAsync(Ator ator)
         {
             var atorEntity = ator.ToEntity();
-            _context.Attach(atorEntity);
-            _context.Entry(atorEntity).State = EntityState.Modified;
+            _context.Atores.Update(atorEntity);            
             await _context.SaveChangesAsync();
             return atorEntity.Id;
         }

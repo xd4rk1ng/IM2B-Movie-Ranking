@@ -85,6 +85,24 @@ namespace IM2B.Controllers
                     Biografia = vm.Biografia
                 };
                 int atorId = await _atorRepo.AddAsync(ator);
+                // Save photo if provided
+                if (vm.Foto != null && vm.Foto.Length > 0)
+                {
+                    var photoPath = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "atores"
+                    );
+
+                    // Ensure directory exists
+                    if (!Directory.Exists(photoPath))
+                        Directory.CreateDirectory(photoPath);
+
+                    var filePath = Path.Combine(photoPath, $"{atorId}.jpg");
+
+                    using var stream = new FileStream(filePath, FileMode.Create);
+                    await vm.Foto.CopyToAsync(stream);
+                }
                 return RedirectToAction(nameof(Details), new { id = atorId });
             }
             return View(vm);
@@ -112,11 +130,10 @@ namespace IM2B.Controllers
 
         // Edit POST - Processar edição do ator
         [Authorize(Roles = "Curador")]
-        [HttpPost("Ator/Edit/{id}")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, FormAtorViewModel vm)
-        {
-            
+        public async Task<IActionResult> Edit(int id, FormAtorViewModel vm, IFormFile? Foto)
+        {            
             if (id != vm.Id)
             {
                 return NotFound();
@@ -132,6 +149,26 @@ namespace IM2B.Controllers
                 ator.DataObito = vm.DataObito;
                 ator.Biografia = vm.Biografia;
 
+
+                int atorId = await _atorRepo.UpdateAsync(ator);
+                // Save photo if provided
+                if (vm.Foto != null && vm.Foto.Length > 0)
+                {
+                    var photoPath = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "atores"
+                    );
+
+                    // Ensure directory exists
+                    if (!Directory.Exists(photoPath))
+                        Directory.CreateDirectory(photoPath);
+
+                    var filePath = Path.Combine(photoPath, $"{atorId}.jpg");
+
+                    using var stream = new FileStream(filePath, FileMode.Create);
+                    await vm.Foto.CopyToAsync(stream);
+                }
 
                 await _atorRepo.UpdateAsync(ator);
                 return RedirectToAction(nameof(Index));

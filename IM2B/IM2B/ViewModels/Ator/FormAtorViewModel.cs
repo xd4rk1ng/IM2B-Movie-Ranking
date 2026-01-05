@@ -24,7 +24,7 @@ namespace IM2B.ViewModels.Ator
         [DataType(DataType.MultilineText)]
         public string Biografia { get; set; }
 
-        // For displaying related movies; optional in the view
-        //public List<FilmeListItemViewModel> Filmes { get; set; }
+        // Foto do ator
+        public IFormFile? Foto { get; set; }
     }
 }

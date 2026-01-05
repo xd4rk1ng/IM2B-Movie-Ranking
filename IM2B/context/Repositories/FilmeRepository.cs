@@ -50,7 +50,7 @@ namespace context.Repositories
         public async Task<int> UpdateAsync(Filme filme)
         {
             var filmeEntity = filme.ToEntity();
-            _context.Filmes.Update(filme.ToEntity());
+            _context.Filmes.Update(filmeEntity);
             await _context.SaveChangesAsync();
             return filmeEntity.Id;
         }
