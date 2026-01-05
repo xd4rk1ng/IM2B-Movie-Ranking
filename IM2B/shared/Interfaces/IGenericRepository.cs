@@ -8,7 +8,7 @@
         Task<List<Model>> GetAllAsync();
         Task<List<Model>> GetAllTrackedAsync();
         Task<int> AddAsync(Model objectModel);
-        Task UpdateAsync(Model objectModel);
+        Task<int> UpdateAsync(Model objectModel);
         Task DeleteAsync(int id);
     }
 }

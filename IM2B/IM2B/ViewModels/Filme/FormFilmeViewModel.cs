@@ -30,5 +30,6 @@ namespace IM2B.ViewModels.Filme
         [Range(1, 5, ErrorMessage = "A avaliação deve estar entre 1 e 5.")]
         [Display(Name = "Avaliação")]
         public int Avaliacao { get; set; } = 3; // default
+        public IFormFile? Poster { get; set; }
     }
 }

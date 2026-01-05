@@ -92,7 +92,25 @@ namespace IM2B.Controllers
                     Avaliacao = vm.Avaliacao,
                 };
                 int filmeId = await _filmeRepo.AddAsync(filme);
-                return RedirectToAction(nameof(Index));
+                // Save poster if provided
+                if (vm.Poster != null && vm.Poster.Length > 0)
+                {
+                    var cartazesPath = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "cartazes"
+                    );
+
+                    // Ensure directory exists
+                    if (!Directory.Exists(cartazesPath))
+                        Directory.CreateDirectory(cartazesPath);
+
+                    var filePath = Path.Combine(cartazesPath, $"{filmeId}.jpg");
+
+                    using var stream = new FileStream(filePath, FileMode.Create);
+                    await vm.Poster.CopyToAsync(stream);
+                }
+                return RedirectToAction(nameof(Details), new { id = filmeId });
             }
             return View(vm);
         }
@@ -122,7 +140,7 @@ namespace IM2B.Controllers
         [Authorize(Roles = "Curador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, FormFilmeViewModel vm)
+        public async Task<IActionResult> Edit(int id, FormFilmeViewModel vm, IFormFile? Poster)
         {
             if (id != vm.Id)
                 return NotFound();
@@ -139,8 +157,25 @@ namespace IM2B.Controllers
                 filme.Duracao = TimeSpan.FromMinutes(vm.Duracao);
                 filme.Avaliacao = vm.Avaliacao;
 
-                await _filmeRepo.UpdateAsync(filme);
-                return RedirectToAction(nameof(Index));
+                var filmeId = await _filmeRepo.UpdateAsync(filme);
+                if (vm.Poster != null && vm.Poster.Length > 0)
+                {
+                    var cartazesPath = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "cartazes"
+                    );
+
+                    // Ensure directory exists
+                    if (!Directory.Exists(cartazesPath))
+                        Directory.CreateDirectory(cartazesPath);
+
+                    var filePath = Path.Combine(cartazesPath, $"{filmeId}.jpg");
+
+                    using var stream = new FileStream(filePath, FileMode.Create);
+                    await vm.Poster.CopyToAsync(stream);
+                }
+                return RedirectToAction(nameof(Details), new { id = filme.Id });
             }
             return View(vm);
         }
@@ -187,13 +222,6 @@ namespace IM2B.Controllers
             await _filmeRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
-        //public IActionResult DeleteConfirmed(int id)
-        //{
-        // TODO: var filme = _context.Filmes.Find(id);
-        // TODO: _context.Filmes.Remove(filme);
-        // TODO: _context.SaveChanges();
-        // return RedirectToAction(nameof(Index));
-        //}
 
         // AtribuirPapel GET - Formulário para atribuir ator a filme
         [Authorize(Roles = "Curador")]

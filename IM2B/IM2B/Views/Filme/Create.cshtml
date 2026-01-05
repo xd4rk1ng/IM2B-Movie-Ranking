@@ -13,7 +13,7 @@
 
 <div class="card bg-dark text-light border-warning">
     <div class="card-body">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
             @* Hidden Id (needed if you reuse the view for Edit) *@
@@ -75,6 +75,22 @@
                     <option value="5">⭐⭐⭐⭐⭐ 5 - Excelente</option>
                 </select>
                 <span asp-validation-for="Avaliacao" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-4">
+                <label asp-for="Poster" class="form-label">
+                    <i class="fas fa-image"></i> Cartaz do Filme
+                </label>
+
+                <input asp-for="Poster"
+                       type="file"
+                       accept="image/*"
+                       class="form-control bg-dark text-light border-secondary" />
+
+                <span asp-validation-for="Poster" class="text-danger"></span>
+
+                <small class="text-secondary">
+                    O cartaz será guardado em <code>wwwroot/cartazes/{id}.jpg</code>
+                </small>
             </div>
 
             <div class="d-flex gap-2">

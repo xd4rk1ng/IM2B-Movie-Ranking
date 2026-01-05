@@ -71,10 +71,12 @@ namespace context.Repositories
             return papelEntity.Id;
         }
 
-        public async Task UpdateAsync(Papel papel)
+        public async Task<int> UpdateAsync(Papel papel)
         {
-            _context.Papeis.Update(papel.ToEntity());
+            var papelEntity = papel.ToEntity();
+            _context.Papeis.Update(papelEntity);
             await _context.SaveChangesAsync();
+            return papelEntity.Id;
         }
 
         public async Task DeleteAsync(int id)

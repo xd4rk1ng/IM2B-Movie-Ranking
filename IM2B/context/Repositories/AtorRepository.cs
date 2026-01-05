@@ -47,12 +47,13 @@ namespace context.Repositories
             return atorEntity.Id;
         }
 
-        public async Task UpdateAsync(Ator ator)
+        public async Task<int> UpdateAsync(Ator ator)
         {
             var atorEntity = ator.ToEntity();
             _context.Attach(atorEntity);
             _context.Entry(atorEntity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            return atorEntity.Id;
         }
 
         public async Task DeleteAsync(int id)

@@ -2,6 +2,7 @@
 using shared.Models;
 using shared.Interfaces;
 using context.Mappings;
+using context.Entities;
 
 namespace context.Repositories
 {
@@ -46,10 +47,12 @@ namespace context.Repositories
             return filmeEntity.Id;
         }
 
-        public async Task UpdateAsync(Filme filme)
+        public async Task<int> UpdateAsync(Filme filme)
         {
+            var filmeEntity = filme.ToEntity();
             _context.Filmes.Update(filme.ToEntity());
             await _context.SaveChangesAsync();
+            return filmeEntity.Id;
         }
 
         public async Task DeleteAsync(int id)
