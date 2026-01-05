@@ -1,0 +1,118 @@
+﻿@model IM2B.ViewModels.Account.EditUserViewModel
+
+@{
+    var user = Model;
+
+    ViewData["Title"] = "Editar Conta - " + user.UserName;
+}
+
+<h2><i class="fas fa-user-cog"></i> Editar Conta</h2>
+
+<form asp-action="Edit" asp-controller="Account" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="form-group mb-3">      
+        <label asp-for="NomeCompleto" class="form-label">
+            <i class="fas fa-user"></i> Nome Completo
+        </label>
+        <input asp-for="NomeCompleto"
+               class="form-control bg-dark text-light border-secondary"
+               placeholder="Nome completo" />
+        <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="UserName" class="form-label">
+            <i class="fas fa-user"></i> Nome de Utilizador
+        </label>
+        <input asp-for="UserName"
+               class="form-control bg-dark text-light border-secondary"
+               placeholder="Nome de utilizador" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Email" class="form-label">
+            <i class="fas fa-envelope"></i> Email
+        </label>
+        <input asp-for="Email"
+               type="email"
+               class="form-control bg-dark text-light border-secondary"
+               placeholder="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-2">
+        <input asp-for="ChangePassword" class="form-check-input" id="ChangePassword" />
+        <label asp-for="ChangePassword" class="form-check-label">
+            <i class="fas fa-key"></i> Alterar Password
+        </label>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Password" class="form-label">
+            <i class="fas fa-lock"></i> Password
+        </label>
+        <input asp-for="Password"
+               id="Password"
+               autocomplete="new-password"
+               type="password"
+               class="form-control bg-dark text-light border-secondary"
+               placeholder="Password"
+               disabled="@(Model?.ChangePassword == true ? null : "disabled")" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+        <small class="text-secondary">Marque "Alterar Password" para editar; deixe desmarcado para manter a password atual</small>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ConfirmPassword" class="form-label">
+            <i class="fas fa-lock"></i> Confirmar Password
+        </label>
+        <input asp-for="ConfirmPassword"
+               id="ConfirmPassword"
+               autocomplete="new-password"
+               type="password"
+               class="form-control bg-dark text-light border-secondary"
+               placeholder="Confirmar password"
+               disabled="@(Model?.ChangePassword == true ? null : "disabled")" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> Guardar Alterações
+    </button>
+
+    <a asp-action="UserList" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Voltar à lista
+    </a>
+</form>
+
+@section Scripts {
+    <script>
+        (function () {
+            const checkbox = document.getElementById('ChangePassword');
+            const pwd = document.getElementById('Password');
+            const confirm = document.getElementById('ConfirmPassword');
+
+            function update() {
+                const enabled = checkbox && checkbox.checked;
+                if (!pwd || !confirm) return;
+
+                if (enabled) {
+                    pwd.disabled = false;
+                    confirm.disabled = false;
+                    pwd.setAttribute('minlength', '6');
+                } else {
+                    pwd.disabled = true;
+                    confirm.disabled = true;
+                    pwd.value = '';
+                    confirm.value = '';
+                    pwd.removeAttribute('minlength');
+                }
+            }
+
+            checkbox?.addEventListener('change', update);
+            document.addEventListener('DOMContentLoaded', update);
+        })();
+    </script>
+}
