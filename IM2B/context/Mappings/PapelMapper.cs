@@ -27,9 +27,7 @@ namespace context.Mappings
             {
                 Id = model.Id,
                 FilmeId = model.FilmeId,
-                Filme = model.Filme.ToEntity(),
                 AtorId = model.AtorId,
-                Ator = model.Ator.ToEntity(),
                 Personagem = model.Personagem,
                 Principal = model.Principal
             };

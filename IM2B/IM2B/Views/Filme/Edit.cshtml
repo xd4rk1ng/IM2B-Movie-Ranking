@@ -1,4 +1,4 @@
-﻿@model shared.Models.Filme
+﻿@model IM2B.ViewModels.Filme.FormFilmeViewModel
 
 @{
     ViewData["Title"] = "Editar Filme";
@@ -7,7 +7,7 @@
 <div class="hero-section">
     <div class="container">
         <h2 class="mb-3"><i class="fas fa-edit"></i> Editar Filme</h2>
-        <p class="text-muted">Apenas curadores podem editar filmes</p>
+        <p class="text-secondary">Apenas curadores podem editar filmes</p>
     </div>
 </div>
 
@@ -49,11 +49,15 @@
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label asp-for="Duracao" class="form-label">
-                            <i class="fas fa-clock"></i> Duração (HH:MM:SS)
+                            <i class="fas fa-clock"></i> Duração (mins)
                         </label>
-                        <input asp-for="Duracao" class="form-control bg-dark text-light border-secondary" type="time" />
+                        <input asp-for="Duracao"
+                               type="number"
+                               id="duracao"
+                               step="1"
+                               class="form-control bg-dark text-light border-secondary"
+                               placeholder="Duração em minutos" />
                         <span asp-validation-for="Duracao" class="text-danger"></span>
-                        <small class="form-text text-muted">Formato: Horas:Minutos:Segundos</small>
                     </div>
                 </div>
             </div>
@@ -85,7 +89,10 @@
                     <i class="fas fa-times"></i> Cancelar
                 </a>
                 <a asp-action="Index" class="btn btn-outline-light">
-                    <i class="fas fa-arrow-left"></i> Voltar à lista
+                    <i class="fas fa-arrow-left"></i> Lista de Atores
+                </a>
+                <a asp-action="AtribuirPapel" asp-route-filmeId="@Model.Id" class="btn btn-warning">
+                    <i class="fas fa-user-edit"></i> Editar Papeis
                 </a>
             </div>
         </form>
